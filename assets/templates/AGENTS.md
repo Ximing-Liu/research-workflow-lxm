@@ -33,21 +33,15 @@
 
 ## 读论文的规矩
 
-`related_work/` 里每篇都是**两个格式都下**：`paper.pdf` 和 `source/`（arXiv LaTeX 源码）。
+`related_work/` 里每篇都是 `paper.pdf` + `source/`（LaTeX 源码），按要问什么选：
 
-**按你要问什么来选，不要图省事只读一个：**
+- 泛读（讲了什么、什么方法）→ `paper.pdf`
+- 细查（表里的数、公式、引用）→ `source/*.tex`
+- 看图 → 只能 `paper.pdf`，图不在源码里
 
-- **泛读**——「这篇大概讲了什么、用了什么方法、什么数据集」→ 读 `paper.pdf`，**更省 token**
-- **细查**——「Table 3 那一行是多少」「这个 bound 怎么推的」「他引的是哪篇」
-  → 读 `source/*.tex`，**PDF 抽出来表格的行列配对会断，公式会塌**
-- **看图**——「图 3 那条曲线什么走势」→ 只能读 `paper.pdf`，**图不在源码里，源码只有 caption**
+用 `fetch-paper.sh` 抓的源码已清洗过（旧稿在 `source/.stale/`，注释已剥、原文存 `.orig`）。
+手动下的记得自己清一遍。宏多的论文先读 `commands.tex` / `macros.tex` 这类文件。
 
-用 `fetch-paper.sh` 抓的论文，源码已经清洗过了：旧稿被移进 `source/.stale/`（没删），
-`%` 注释已剥掉、原文件存为 `.orig`。**手动下的论文记得自己清一遍**，
-否则会读到作者三个月前的旧数据。
-
-自定义宏超过 80 个的话，读正文前先读 `commands.tex` / `macros.tex` / `def.tex` 这类文件，
-不然满篇 `\ourmethod` `\tabref` 不知道展开成什么。
 
 ---
 

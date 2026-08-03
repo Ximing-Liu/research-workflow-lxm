@@ -4,9 +4,8 @@
 #   ./fetch-paper.sh 2301.11305 detectgpt-zero-shot-curvature
 #   ./fetch-paper.sh 2301.11305                    # 不给 slug 就用 arXiv ID 当目录名
 #
-# 为什么两个都下、为什么要清洗，见 references/reading-papers.md。
-# 简版：泛读喂 PDF 更省 token，细查表格/公式必须喂 LaTeX；
-# 而源码里常混着作者的旧稿和注释掉的正文，不清掉会被引用到过期数字。
+# 两个都下：泛读读 PDF，查表格/公式读 LaTeX。
+# 源码里常混着作者的旧稿和注释掉的正文，不清掉会引用到过期数字。
 
 set -euo pipefail
 
