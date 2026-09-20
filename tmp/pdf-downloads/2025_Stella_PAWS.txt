@@ -1,0 +1,679 @@
+
+
+--- PAGE 1 ---
+ nature machine intelligence
+Article https://doi.org/10.1038/s42256-025-00988-x
+Synergy-based robotic quadruped leveraging passivity for natural intelligence and behavioural diversity
+  Received: 22 July 2023 Accepted: 9 January 2025 Published online: 17 March 2025
+Check for updates
+Francesco Stella   1,2,3,5 , Mickaël M. Achkar   1,5, Cosimo Della Santina2,4 & Josie Hughes1
+Quadrupedal animals show remarkable capabilities in traversing diverse terrains and display a range of behaviours and gait patterns. Achieving similar performance by exploiting the natural dynamics of the system is
+a key goal for robotics researchers. Here we show a bioinspired approach
+to the design of quadrupeds that seeks to exploit the body and the passive properties of the robot while maintaining active controllability on the system through minimal actuation. Utilizing an end-to-end computational design pipeline, neuromechanical couplings recorded in biological quadrupeds are translated into motor synergies, allowing minimal actuation to control the full structure via multijoint compliant mechanical couplings. Using this approach, we develop PAWS, a passive automata with synergies. By leveraging the principles of motor synergies, the design incorporates variable stiffness, anatomical insights and self-organization to simplify control while maximizing its capabilities. The resulting synergy-based quadruped requires only four actuators and exhibits emergent, animal-like dynamical responses, including passive robustness to environmental perturbations and a wide range of actuated behaviours. The finding contributes to the development of machine physical intelligence and provides robots with more efficient and natural-looking robotic locomotion by combining synergistic actuation, compliant body properties and embodied compensatory strategies.
+      Quadruped animals demonstrate advanced, efficient locomotion strategies across diverse terrains leveraging a range of behaviours1. Illustratively, cheetahs reach over 70 mph, mountain goats manoeuvre steep, rocky landscapes, and caribou can robustly cover hundreds to thousands of miles annually in their migrations2. The development of robotic quadrupeds seeks to replicate or exceed the capabilities for applications including exploration, inspection and search and rescue3,4. The capabilities of animals stem from their unique morphological
+characteristics and passive biomechanical and musculoskeletal proper- ties5. Compliance—mediated by elastic tendons and muscles—is widely recognized as a central driver of this observed physical intelligence6,7. Yet, the mainstream approach to robotic locomotion is not to rep- licate the physical functionality of animal systems but to approxi- mate the biomechanics and morphology, relying on standard rigid robotic components in conjunction with serial actuators8,9. The task of implementing effective locomotion is then fully outsourced to a
+ 1CREATE Lab, STI, EPFL, Lausanne, Switzerland. 2Department of Cognitive Robotics, Delft University of Technology, Delft, the Netherlands. 3Computer Science and Artificial Intelligence Laboratory, Massachusetts Institute of Technology, Cambridge, MA, USA. 4Institute of Robotics and Mechatronics, German Aerospace Center, Wessling, Germany. 5These authors contributed equally: Francesco Stella, Mickaël M. Achkar.  e-mail: francesco.stella@epfl.ch
+ Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+386
+
+
+--- PAGE 2 ---
+Article
+complex model-based10,11 or a learnt locomotion strategy12–14. The results achieved this way are indubitably impressive. However, they require important amounts of computation, rapid sensory-motor feedback loops, dense networks of sensors and full actuation to func- tion properly.
+A diametrically opposite approach is followed by proponents of (bipedal) passive walkers. These simplified systems utilize their struc- ture, compliance and environmental interactions to achieve simple and energy efficient, ‘brain-less’ passive walking15,16. However, despite the early encouraging results, as of today, (semi-)passive walkers remain more of an intriguing proof-of-concept rather than fully-fledged robots17,18. Passive walkers with more than a few degrees of freedom have been only analysed in theory19 but never realized. With their lim- ited number of degrees of freedom, even when partially actuated20, they show limited versatility and behavioural diversity, which hinders any realistic application or deployment. To overcome this, we are increasingly seeing encouraging results from approaches that exploit bioinspiration and, more specifically, physical, compliance-driven embodied intelligence21 for robotic locomotion22–25. Recent examples include the excitation of natural jumping locomotion in a cat-inspired robotic leg in ref. 26; the dragonfly-larvae-inspired compliant robot that can emulate a synchronized dual-catapult system for ballistic movements in ref. 27; a quadruped with a feline-like multijoint spine for high-speed running28; and Birdbot, an ostrich inspired robot rely- ing upon a clutch-based mechanism yielding efficient locomotion29.
+With the goal of achieving complex and versatile quasipassive gaits with full-fledged quadrupedal robots, we look to nature for inspiration. More specifically, we augment passivity and compliance with the other fundamental ingredient of animal neuro-mechanics: the hierarchical reduction of complexity through synergistic mappings30,31. Rather than directly actuating all degrees of freedom of the animal body, the central nervous system generates coordinated patterns of activation called synergies. This way, it actuates only the components of move- ment that are important, leaving it to the body’s physical intelligence to generate the rest of the motion. As a control principle, synergies have been applied to hands32–35, supernumerary limbs36, robotic arms37 and exoskeletons38. Arguably the most successful application of synergies has been as a principle of embodying intelligence into mechanical design. In this context, synergistic actuation has found substantial application in robotic hands39–43, yielding devices that can grasp and manipulate objects with minimal sensing and control requirements, while using only a few actuation sources (typically one to four). Syn- ergies have also been successfully applied to optimize the design of a biologically inspired bat robot, to show multiple modes of bat flight44,45 and to provide a highly robust approach for humanoid robot balance control46,47. However, so far, synergistic actuation has not been applied to locomotion where there is a need for coordination between limbs, and there has been limited exploitation of how passivity can be advan- tageous within synergies.
+In this Article, we present a passive automata with synergies (PAWS), a legged system with synergistic actuation that uses four actuators to control its 12 degrees of freedom. The four motors imple- ment four locomotion synergies that we distil from biological data of dogs running. By combining synergy-based actuation with optimal physical compliance, this quadruped shows emergent and animal-like dynamical responses to the environment. PAWS shows fully passive locomotion gaits that are robust to environmental perturbations and present behavioural diversity. Using inverse kinematics (IKs) on motor synergies, we can also generate versatile active gaits such as sitting, jumping and running on top of the robot’s natural dynamics.
+This design is fully designed by a pipeline where optimal actuation synergies and passive compliance are identified on the basis of bio- logical quadruped motion capture data. From these, a synergy-based actuation is extracted to mimic the neuromechanical couplings seen in biological systems. We observe that this solution yields directional
+https://doi.org/10.1038/s42256-025-00988-x
+ stiffness at the leg’s end effector, which varies across the robot’s work- space or gait advantageously. The synergistic tendon routing yields limb coupling, enabling embodied compensatory strategies and behaviours emerging purely from the system’s mechanical response. The system’s passive traits offer environmental resilience due to the bioinspired spatial stiffness and leg coupling. This provides a bioin- spired approach to the design of quadrupeds, which seeks to exploit environmental interactions.
+Results
+By designing a robotic quadruped with motor synergies and compli- ance, we seek to develop a minimally actuated robot that shows robust- ness to disturbances and behaviour diversity. To generate this design, we find inspiration from the neuromechanical couplings displayed by bio- logical systems. By translating animal joint motion recordings into the principle components that best describe the motions, we can extract the synergies and grouping of legs that enable replication with minimal loss of reachable poses. Following this dimensionality reduction, the joint stiffness and tendon routings for a 12-joint tendon-driven quadruped robot can be identified through optimization. By combining this design pipeline with modular hardware, we can show that by appropriately designing the impedance and postural synergies, it is possible to gener- ate a synergy-enabled robotic quadruped that displays robust passive interaction with the environment and diverse and natural-looking active behaviours. Namely, we develop PAWS, a synergy-based quadruped that leverages only four actuators to control all 12 joints (3 per leg). We experimentally characterize the passive and actuated properties of this robot, showing the emergent robustness and rapid recovery to perturbations and the actuated capabilities of the system.
+Synergy analysis from animal data
+There is extensive evidence that the sensory–muscular systems of animals are organized into functional or structural couplings at differ- ent hierarchical levels, including at the neural and muscular levels 48–51. Mirroring this neuromechanical coupling in robotic systems would be hugely insightful; however, it is challenging in terms of data availability and technologies. Instead, we propose identifying motor synergies from observations of the animals’ kinematics and exploring the extent to which this can provide physically advantageous behaviours while reducing the control complexity.
+To capture the forms of motion and poses seen in animals, we use an open-source dataset composed of 147,541 poses and corresponding joint angles acquired via motion capture of a dog52. Some exemplar poses and motions are illustrated in Fig. 1 and Fig. 2c. We choose to use the full dataset, as this reflects the range of possible motions and kinematics of the dog and, hence, provides a robot design that can show this diversity in behaviour. This set of postures and motions is highly redundant, as many poses show similar ratios of joint activations. This redundancy can be captured using principal component analysis (PCA), where we decompose the animals’ joint data into a number of components that seek to represent the maximum amount of variance in the animal joint data. This PCA-based dimensionality reduction was conducted by identifying the eigenvectors of the covariance matrix of the dog dataset on the recorded joint motions for different pos- sible subsets of limbs, including all four limbs, and different two limb combinations. When analyzing the full-body, 12 joints (3 joints per leg) were considered, resulting in a 12 × 12 synergy matrix, with the columns representing the principal components. PCA was also conducted on different two-legged groupings of the four legs, to explore how differ- ent limb couplings affect the variance captured via PCA. Specifically, we focus on hind and forelimbs, right and left limbs and crossed limbs. For each of these analyses, the extracted principle components were ranked on the basis of explained variance. The results are given in Fig. 2a, where we see for all configurations, four synergies can be used to achieve upwards of ~80% across all legs.
+ Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+387
+
+
+--- PAGE 3 ---
+Article
+https://doi.org/10.1038/s42256-025-00988-x
+  a
+  Directional spatial stiffness
+Embodied robustness to the environment
+Synergy-based actuation
+Behaviour diversity inspired by neuromechanical couplings
+ b
+Front-rear leg couplings
+Embodied compensatory strategies
+PCA
+and synergy extraction
+Motor basis
+    Real-world animal data
+Gait trajectories
+Optimization on modular design
+Inverse kinematic
+Robotic system
+Control actions
+   Fig. 1 | PAWS. a, PAWS together with a pictorial representation of the features contributing to the high embodied intelligence of the design. b, A schematic representation of the pipeline used to design and control PAWS. From real-world animal data, linear order-reduction methods are used to extract the synergies.
+Realization and transfer to a synergy-equivalent mechanism
+To realize the design, the quadruped is modelled as having four legs, each with three joints. Each ‘half-dog’ (that is, one forelimb and hindlimb) has two motors connected via a pulley to the two tendons that route each synergy. Each tendon is guided by a set of pulleys left free to rotate around the centre of rotation of each joint (Fig. 2d). Each joint is connected to the subsequent link through a torsional spring, encapsulated in the mechanism depicted in Fig. 2e. The robot design is composed of modular parts, in which the radius of the pul- leys guiding each tendon, the direction of the tendon routing and the torsional stiffness for each joint can be fully parametrized and rapidly customized. Given the selected number and distribution of the synergies, an optimization process reported in the ‘Synergy for- mulation and optimization method’ section is performed to generate the tendon routing, pulley sizes and joint stiffness to best achieve the identified synergies. The cost function for the optimization is designed so to penalize differences in joint activations between the synergy base and the resulting motion of the mechanism. The evolution of the joints in the real system is formalized as the static equilibrium between the torsional springs embedded at the joint level and the tension exerted by the multiarticular tendons. Therefore, by vary- ing tendon routing, pulley sizes and joint stiffness, it is possible to achieve different motions as a function of the tendon activation of the motors. A schematic representation of the resulting optimized robot, topology and synergy routing is shown in Fig. 2f. The design has a high stiffness in its front foot and rear hip and a lowest stiffness
+These are then used as input to an optimization of the mechanical components and to find the motor activations for the synergistic system. Dog diagram
+in a created with BioRender.com. Credit: b, German shepherd photograph, iStockphoto; 3D dog model, Truebones Motions Animation Studios.
+in the rear foot and hip showing an inverse distribution of stiffness between the fore- and hindlimbs.
+Despite the limited number of actuators in the half-dog, the two synergies can be blended to achieve a wide workspace, as shown in Supplementary Video 1. The extent of this workspace was visualized by systematically blending the synergies with varying ratios and recording the pose of the two feet with motion capture (Supplementary Fig. 8b).
+Gait IKs
+By performing the IK within the workspace of the robot, it is possible to generate motor activation for each of the synergies that generate different bioinspired animal gaits. Starting from motion capture of the animal, the target gait motion is defined by their front and back end-effector (paw) motion for a period or sequence of this gait. This motion is scaled to the size of the robot, and IK is performed in synergy space. Three key examples of different gait patterns are shown in Fig. 3a for walking, sitting and running, with the target animal-inspired gait, and obtained from IK using only two synergies. Despite the reduced actuation set, the robot can track the different gaits.
+The IK considers only the Cartesian position of the end of the two legs; however, to fully leverage the synergy and IK based upon the bioinspired gait, the means and route through which this gait is achieved are important. This can be measured by comparing the evolution of the six joint angles between the animal data and that of the robot, as given in Fig. 3b for the walking gait. Despite the IK con- sidering only the end effector and the robot having some differences
+  Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+388
+
+
+--- PAGE 4 ---
+Article
+https://doi.org/10.1038/s42256-025-00988-x
+a
+80 60 40 20
+All four limbs
+Hindlimbs and forelimbs
+b
+Synergy 1
+Forelimb Hindlimb
+Synergy 2
+d
+s2 s1 r11
+r k1 12
+r21 r22
+r 31 r 32
+s2 s1
+Tendon pulleys
+k4=454−1 N mm rad
+q 4
+00 63 76 84 88 90 92 94 96 97 99 99 100
+89 92 95 97 99 100 41 71 82 90 96 100 Crossed limbs
+80 60 40 20
+80 60 40 20
+Left and right limbs
+00
+63 79 91 95 9810067 83 92 95 98100
+63 80 91 94 9810066 81 91 95 98100 Cumulative explained variance (%)
+Canter Gallop Rest
+Walk
+Sit Land
+e Mechanical transmission
+Jump
+Lie
+F
+q3
+k2=578−1 N mm rad k1=508−1
+N mm rad
+Synergy 1
+q Synergy2 2
+q5
+k2 k3
+Links
+Paw
+q1
+k5 = 883 N mm rad−1
+q6 k=925 N mm rad 6 −1
+Stiffness modules
+∆l f/2
+∆l/2
+Fig. 2 | Synergy analysis. a, Eigenvectors of the PCA for different dog limb groupings ranked by explained variance. The eigenvectors highlighted show potential candidates for a physical system with a reduced actuation and, yet, a wide range of reachable behaviours. b, Top: the evolution of the first two principal components, described as synergy 1 and 2, as extracted from PCA. Middle: the evolution of the two synergies after the optimization, that is, considering the losses due to the mechanical design specifications but not considering the deployment on a real system. Bottom: the evolution shown by the real system when actuating only one of the motors. c, An example of poses from the dataset from ref. 52. d, A schematic representation of the mechanism
+of each leg. Each joint comprises two pulleys to guide the tendons for synergy
+s1 and s2 and a torsional stiffness module. e, A highlight of the torsional stiffness module with the force transmission highlighted. This is composed of two
+linear springs acting antagonistically on a rotational pulley. By virtue of the transmission system, a wide set of pulley radiuses can be accommodated, thus enabling a wide set of possible torsional stiffnesses achievable with the module. f, A representation of the mechanism found as a solution of the optimization, considering tendon routing, pulley sizes and stiffness at the joint level. Panel c adapted from refs. 52,67 under a Creative Commons licence CC BY-NC 4.0. Credit: a, 3D dog model, Truebones Motions Animation Studios.
+80 60 40 20
+Hindlimb
+Forelimb
+cf
+k3 = 925 −1 N mm rad
+in morphology, the evolution of the robot’s joint angles shows clear
+this can offload the computation required for such tasks to the body. similarities to the animal data. This correspondence in Cartesian and
+The passive properties of the robot can be experimentally evaluated joint space between animal and robot demonstrates how the synergy
+by placing the robot on a treadmill without connecting the motors to basis assists in implicitly capturing the gait and the evolution by which
+the tendons, counterbalancing the robot with a four-bar linkage such the redundant leg system reaches a Cartesian position.
+that it stabilized and observing the response to different treadmill speeds or various external disturbances.
+Passive properties
+In addition to being able to achieve bioinspired gaits and motions, by optimizing the design using animal motion, the design captures advantageous passive properties, namely, a robustness to external perturbations and a passive gait pattern. While direct actuation of the robot is necessary for functionality and this can augment the passive response by embedding advantageous properties at the hardware level,
+When the four-legged passive robot is placed on the moving tread- mill, there is an emergent periodic galloping-like gait that shows coor- dination between the fore- and hindlimbs. This passive response is shown in Fig. 4a, top, showing the leg motion and rise and fall of the robot. When compared with the running motion of a dog (Fig. 4a, bot- tom), we see similarities in the motion of the robot, with the passive properties mirroring a typical running gait.
+Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+389
+  Total = 87.71%
+  Hindlimbs
+Forelimbs
+Total = (92.41%; 70.92%)
+    Left limbs Right limbs
+Total = (79.34%; 82.67%)
+   Left hindlimb and right forelimb Right hindlimb and left forelimb
+Total = (80.46%; 80.98%)
+   Explained variance (%)
+Real-world After From deployment optimization PCA
+   500 mm
+Actuator 1
+Actuator 2
+      Springs
+    
+
+--- PAGE 5 ---
+Article
+https://doi.org/10.1038/s42256-025-00988-x
+a
+100 0 –100 –200 –300 –400
+100 0 –100 –200 –300 –400
+100 0 –100 –200 –300 –400
+Walking
+0
+x (mm)
+Sitting
+0
+x (mm)
+Running
+0
+x (mm)
+b
+Joint evolutions for walking
+–400
+–400
+–400
+–200
+–200
+–200
+200
+200
+200
+400
+400
+400
+600
+600
+600
+20 40 60 80 100 –20 100
+20 40 60 80 100
+20 40 60 80 100
+20 40 60 80 100 Period percentagee (%)
+Fig. 3 | Bioinspired tracking capabilities. a, Examples of behaviours that
+are possible to track with the reduced motor set. In particular, in grey, the trajectories recorded on real animals are reported, while in red it is possible to observe the tracking achievable with the robotic system. b, Evolution of each of the six joints during a walking gait. In grey, the evolution of the joint on real- world animal data is reported, with a confidence level based on the variation
+For the passive properties to provide advantageous robustness and also enable a variety of motions, the passive response must vary for different external inputs to the system. This can be simulated by varying the speed of the treadmill and observing the resultant gait. By tracking the ‘paws’ of the robot via feature tracking of videos, the foot trajectories and, hence, the footfall of the emergent gait can be recorded. The resultant trajectories are shown in Fig. 4b for an increase in treadmill speed from 1 km h−1 to 6 km h−1, with the trajectory given relative to the top of the robot. The trajectories show a similar form; however, the amplitude of motion increases with treadmill speed and, in particular, for the forelimb. This shows similarities to biological quadrupeds running with increasing speed, with the forelimb mov- ing further forward to achieve a larger stroke to sustain the increase in speed. Figure 4c reports the amplitude of the gait with increasing treadmill speed for the fore- and hindlimb, showing an increase in forelimb amplitude, whereas the hindlimb increases until reaching a plateau at approximately 4 km h−1. Unlike the passive dynamic walker, which has rather a fixed gait in response to stimuli, the introduction of synergistic coupling and directional stiffness provides diversity in the response to stimuli, providing scaffolding for more complex actuated behaviours.
+The gait can also be analysed in terms of the footfall, to identify the progression between single support (single foot contact), double support (double foot contact) and flight period that occurs. By ana- lyzing the trajectory and contact with the treadmill, the contact time
+over multiple cycles. Shown in red is the joint evolution for the robotic system, generated by solving the IK problem on the synergy base. As demonstrated by the matching, by solving the IK problem on the synergy subspace, we force the redundant kinematic of the system to reach Cartesian positions with biologically significant poses. This serves as an analysis of the biological equivalence in gait that arises from the use of synergies when performing IK.
+for the fore- and hindlimbs can be determined for a period of passive motion. This footfall analysis is shown in Fig. 4d for different treadmill speeds. The progression from a single support to double and then flight periods matches the progression seen in dog gaits. Furthermore, with increasing treadmill speed we see a notable reduction in the single and double support periods, with much of the gait period forming the flight component of the stance. This shows that for varying treadmill speeds we see the emergence of different behavioural patterns and gait forms, where the synergies and design of the body determine this motion. Moreover, the emergent contact profiles match locomotion strategies in biological quadrupeds, which show increasingly shorter stance phases for faster locomotion strategies53,54.
+Response to perturbations. A second property observed in animals where passivity contributes is robustness to perturbation. As per- turbation can occur rapidly, having a response that is not reliant on the brain provides robustness and a speed of response that enables behaviours to resume rapidly. We can explore the robust properties of the system by passively exciting the robot using the treadmill and applying various forms of disturbance and perturbation. Using the setup shown in Fig. 5a, further discussed in the ‘Animal motion analysis’ section, various disturbances can be applied to the legs or body of the robot (Fig. 5b).
+To quantitatively analyse the response of the passive robot to disturbances, the half-dog robot is placed on the treadmill at a speed
+Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+390
+60 50 40 30 20
+100 90 80 70 60
+80 70 60 50 40
+Animal joint evolution IKonrobot
+80 60 40 20
+0
+20 40 60 80 100
+20 40 60 80 100
+Period percentage (%)
+Animal end-effector evolution
+80 60 40 20
+140 120 100 80
+Tracking achievable
+with two synergies q1
+q2
+q5
+Hindleg q3
+Foreleg q4
+q6
+           y (mm)
+y (mm)
+y (mm)
+q3 (degrees)
+q2 (degrees)
+q1 (degrees)
+q4 (degrees)
+q5 (degrees)
+q6 (degrees)
+  
+
+--- PAGE 6 ---
+Article
+https://doi.org/10.1038/s42256-025-00988-x
+a
+b0c
+300
+125 100 75 50
+25
+246 246
+–150
+–300
+–200
+–300
+–200
+–300
+–200
+–300
+0 250 500
+0 250 500
+0 250 500
+0 250 500 x (mm)
+d
+200
+100
+Forelimb Hindlimb
+Forelimb Hindlimb
+Forelimb Hindlimb
+Speed (km h–1) Speed (km h–1) Speed = 1 km h–1
+Fig. 4 | Passive response of the robotic system to external excitation.
+a, Emergent evolution of the robotic system when excited by the interaction with the treadmill. Due to the interjoint mechanical couplings and the compliant interaction, we can see some visual similarities to gait pattern of the robot
+(top) and the real (bottom) dog. b, The trajectories emergent of the paws corresponding to different levels of energy provided by the environment, parameterized with the speed of the treadmill. The repetitiveness of the trajectories proves the stability of the locomotion pattern over a variety of environmental conditions. In the passive experiment, the robot still has the
+of 4 km h−1 and perturbations are applied to the forelimb, body and hindlimb (Fig. 5c). The trajectory of both feet is recorded before per- turbation, during and after. For all disturbances, the gait rapidly returns to the limit cycle behaviour observed before perturbation. For the forelimb perturbation, this is particularly evident, with the external influence causing a large offset of the forelimb and a small coupled response in the hindlimb. By the next period, the steady-state gait
+synergy-based tendon routings such that the fore- and hindlimbs are connected, but the synergies are not actuated via the motors, instead the energy is input in the system by any forces applied by the treadmill to the robot’s limbs, which, in turn, can lead to tendon activation. c, An analysis of the emerging locomotion pattern. Both the horizontal and vertical variations of the amplitude are as
+a function of the speed. d, An analysis of the footfall pattern as a function of the period. Notably, different levels of excitation lead to different, stable, locomotion strategies, defined by varying levels of stance and flight time.
+trajectory is observed with minimal differences. Similarly, for the body perturbation that causes a perturbation in both legs, there is a high robustness, with a rapid return to the previous gait cycle. Finally, the response of the hindlimb, which is stiffer at the hip level and, hence, requires more energy to be displaced, is slower, taking approximately four gait cycles to return to steady-state behaviour, as more energy is stored in the system.
+Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+391
+0 T 2T 3T
+Single Double Flight support support
+Speed = 3 km h–1
+0 T 2T 3T Speed = 6 km h–1
+0 T 2T 3T
+     Forelimb Hindlimb
+ Forelimb Hindlimb
+    Speed = 6 km h–1
+  Speed = 4 km h–1
+ Speed = 2 km h–1
+         Foot in ground contact
+    Speed = 1 km h–1
+  y (mm) y (mm) y (mm) y (mm)
+Horizontal amplitude (mm)
+Vertical amplitude (mm)
+  
+
+--- PAGE 7 ---
+Article
+https://doi.org/10.1038/s42256-025-00988-x
+ab
+c
+0 –150 –300
+Before Perturbation After
+d
+t = 0.18 s
+t = 1.08 s
+t = 0.72 s 100 50
+t = 1.62 s
+0
+the joints leads to immediate failure of the passive gait pattern, as shown in Supplementary Videos 7 and 8. c, The trajectories of fore- and hindfoot when perturbed at the ankle level or at the centre of the body. After a transient, highlighted in red, the robot returns to the dynamic passive walking cycle. The robot is completely passive, that is, no motors are mounted on the robot, and the full system is powered by the contact between the treadmill and the paws. d, On the left, a timestamp of the dynamic response of the system to obstacles of different heights placed on the treadmill. On the right, the success rate as a function of the obstacle height, recorded on 30 experiments per obstacle.
+a certain height, the response requires active control in addition to passivity and compliance.
+Behaviour diversity of the full quadruped
+By combining the passive properties obtained from the optimized design and the synergy routing, with direct actuation, we leverage the passive properties while expanding the behavioural diversity of the system. This can enable a deployable, passive, synergy-enabled quadruped, which can show different gaits with only four indepen- dently controlled actuators.
+The robot can be actuated using motor activations generated via IK for different motions. In Fig. 6a, it is possible to see the track- ing of an actuated walking gait trajectory performed on the treadmill setup and how it compares to the purely passive gait at the same speed. Notably, by virtue of the actuation, the amplitude of the gait
+Four-bar linkage
+Weight (3 kg) for partial gravity compensation
+PAWS
+Treadmill
+Front-leg perturbation
+0 250 500 x (mm)
+Body perturbation
+Hind-leg perturbation
+0 250 500 x (mm)
+Passive Actuated
+40 mm Obstacle hight
+t = 0 s
+t = 0.9 s
+t = 0.36 s
+t = 1.26 s
+t = 0.54 s
+t = 1.44 s
+Fig. 5 | Dynamic response of PAWS to external perturbations. a, An experimental platform used to capture the performance of the system for both the half- and full-body versions. A four-bar linkage connects the robot to a fixed support, while the treadmill excites the system. A weight of 1.5 and 3 kg is applied at the end of the four-bar linkage for the half- and full-body versions, respectively, to partially compensate gravitational forces. b, A set of exemplary perturbations applied to the system, which demonstrates passive and coordinated response,
+as in Supplementary Video 3. This emergent robust and animal-like passive response is highly dependent on the correct deployment of the synergy theory on the mechanical design. Indeed, a change in routing direction in any of
+In addition to the robustness to external perturbations, the abil- ity to overcome obstacles within the environment is widely seen in quadrupedal animals. By placing obstacles of varying heights on the treadmill at random intervals the response to these obstacles and the success rate can be measured. Figure 5d, top, shows a timelapse of the response of the dog to disturbances to the forelimb, and Fig. 5d, bottom, disturbances to the hindlimb. In both cases, the passivity and compliance in the system allow the robot to robustly overcome the obstacles in a manner that appears bioinspired. The mean success rate across 30 trials was measured for obstacles of different heights, and we see that lower obstacles (20 mm) can be overcome purely by lever- aging the passivity and compliance of the system. With the increase in height, the success rate drops, with only 65% of 60 mm obstacles being successfully overcome. These objects correspond to 20% of the robot’s height and suggest that, as with animals, for obstacles of
+Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+392
+Perturbation stick
+0
+–150 –150
+–300 –300 0 250 500
+x (mm)
+0
+20 mm
+60 mm
+        Succes (%)
+y (mm)
+      
+
+--- PAGE 8 ---
+Article
+https://doi.org/10.1038/s42256-025-00988-x
+a
+0 –150 –300
+c
+b
+Gaitbefore perturbation
+Forelimb Hindlimb
+Gaitafter perturbation
+d
+e
+0
+500
+Passive gait at 1 km h−1 Actuated gait at 1 km h−1
+250 x (mm)
+yfore
+yhind
+Crouching
+Standing dog
+Walking dog
+Jumping dog
+Forward leaning
+Fig. 6 | Different actuated behaviours demonstrated by PAWS. a, A comparison between the active and passive trajectories of the half-dog, shown relative to the ground, both moving at a treadmill speed of 1 km h−1. b, The gait pattern changes over time when encountering an obstacle, showing how the legs’ coupling causes perturbations to be reflected in the opposite leg, where x and y fore and hind refer to the planar Cartesian coordinates of the fore and hind paws. c, The robotic
+can be increased in both horizontal and vertical directions. When comparing actuated and passive gaits in the robustness to obstacles experiment seen in Fig. 5d, the actuated gait allows higher obstacles to be overcome.
+Notably, during actuated gaits, the passive properties of dis- turbance rejection are preserved as a result of underactuation and distributed compliance. In Fig. 6b, the legs are tracked in Cartesian space, before, during and after perturbation due to the contact with a 3 kg obstacle. It is possible to observe that, before the perturba- tion, the actuation enforces a periodic and stable walking gait. Yet the passivity-based robustness is still observable. The gait, perturbed by the contact with an obstacle on the fore- and hindlimb, respectively, rapidly and robustly returns to the previous actuated pattern.
+system transitioning between quasistatic poses, such as crouching, standing and forward leaning, thus demonstrating to support its self-weight. d, PAWS, supported by tendons for self-stability, is actuated with the signals extracted with the IK to perform a walking pattern. e, Motor activation is triggered on top of passive dynamic walking to start a jump, followed by a robust passive recovery and run.
+To further demonstrate the versatility of synergistic actuation, four varying gaits have been selected from the animal dataset, and synergy activations are extracted to best track the trajectories of these. Figure 6c shows crouching, standing and forward-leaning motions on the fully free-standing PAWS robot. As shown by the relative dog poses, these configurations closely mirror the bioinspired poses from which they are obtained. Moreover, the experiment demonstrates the abil- ity of the compliant body to fully support its weight, while remaining compliant to mechanical perturbations.
+In Fig. 6d, it can be observed that the robot, guided by a tendon, exhibits an actuated walking gait, where the activations of the walk- ing synergies shown in Fig. 3a are utilized in an out-of-phase manner between each half-dog. Ultimately, passive and active behaviours
+Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+393
+–50 –100 –150 –200
+200 0 –200 –400
+contact
+contact
+xfore
+0 5 10 15 20
+t (s)
+xhind
+  y (mm)
+x (mm) y (mm)
+         
+
+--- PAGE 9 ---
+Article
+can be combined. For example, in Fig. 6e, from the passive galloping behaviour that emerges from the interaction with the treadmill, a jump- ing gait can be triggered by actuating the motors at a high frequency during the onset of the hindlimb contact.
+This variety of gaits, encompassing crouching, standing and forward-leaning motions, as well as the ability to transition from pas- sive galloping to jumping and actuated walking, exemplifies the wide spectrum of behaviours attainable with minimal actuation.
+Discussion
+Quadrapedal locomotion is a topic that has long engaged and fascinated researchers in biomechanics, robotics, neuroscience and learning communities. Legged robot designers often disregard the postural couplings shown by biological animals, opting for full actuation and complex control schemes. However, animals’ agile and robust per- formance suggests that robot designs could greatly benefit from a comprehensive understanding of complex mechanisms and strate- gically designed compliance seen in the biomechanics of animals. This has the potential to simplify the required control, by offloading some computation to the body, and it is particularly relevant for achiev- ing control decisions that must be made rapidly or even instantane- ously. However, implementing such mechanisms remains a central challenge to enable leg control that is simple, fast and cost-effective and that can begin to match the biological counterpart.
+The approach we propose focuses on maximizing the behaviours and properties that can be performed by the embodied form of the robot. Specifically, we show that by integrating adaptive synergies, not only can we reduce the number of actuators required to control the robotic structure but also we can enhance the adaptability and robustness of interactions between the robot and the environment. By developing PAWS, a synergy-based free-standing quadruped, we highlight the potential of this approach and how it an be used to underpin the design of future quadrupeds.
+The proposed robotic design approach facilitates the design of robotic structures that demonstrate bioinspired mechanical recov- ery strategies, offering particular benefits for navigating uneven, unpredictable or soft terrains. By utilizing the biologically relevant poses, the joint stiffness can be designed to reflect the interaction impedance used by animals when interacting with the environment. Further research is required to fully understand how variable stiffness can be translated to robotic systems to enable body-driven animal locomotion.
+Methods
+Animal motion analysis
+The openly available dataset from which we extract the synergies is 30 min of motion capture footage of a dog recorded on flat terrain52. The data itself are unstructured and contains various canine gaits, including walk, pace, trot and canter, as well as sitting, standing, lying, jumping and idling. To facilitate analysis and interpretation, a skeleton model composed of 27 bones and 81 degrees of freedom was fitted to the captured data52. This skeleton model allows us to analyse the kinematics of the dog thoroughly.
+The angles of the 12 joints in the dog’s limbs were extracted by analyzing skeleton motion files at different time frames. To do this, the joints’ markers were connected with segments, and the relative angles between each consecutive segment were obtained. Specifi- cally, the evolutions of the shoulder, elbow and carpal (wrist) joints were extracted for the forelimbs, while the evolutions of the hip, sti- fle (knee) and tarsal (ankle) joints were extracted for the hindlimbs. This analysis covered a total of 147,541 video frames.
+To obtain the paw trajectories in two dimensions, the position of the distal marker linked to the front and back paws is tracked over time in the sagittal plane and transformed relative to the marker tracking the dog’s base at the sacrum.
+https://doi.org/10.1038/s42256-025-00988-x
+ Synergy formulation and optimization method
+A general animal or robotic kinematic structure can be defined by a vector of n joint angles, q ∈ Rn. A postural synergy base is an orthogonal base of the joint space55, described by a matrix S ∈ Rn×n. This allows the structure’s configuration to be described by the vector σ ∈ Rn, as q = Sσ. Each column of S represents a coordinated motion in joint space, also referred to as postural synergy. The ith element of σ represents the amount of movement of the structure along the ith synergy.
+Several studies in the literature, especially focused on humans, have shown that biological movements can usually be accurately described with a remarkably low dimensional synergy subspace. More precisely, for the case of k < < n, we can define S as
+q ≃ S(1∶k)σ(1∶k), (1)
+where S(k) is the first k columns of S, σ(1:k) is the first k elements of σ and ≃ is defined in the statistical sense. In other words, all movements observed can be explained to a certain degree by combining k funda- mental motions rather than n.
+We show in the ‘Synergy analysis from animal data section’ that a synergistic behaviour also underpins the legs of a dog while run- ning. In our case, we selected two synergies (k = 2), as discussed in the ‘Realization and transfer to a synergy-equivalent mechanism’ section; however, the following analysis remains general. We refer to ref. 56 for an analysis of the trade-off between the number of synergies and the diversity of behaviour reproducible with these.
+In the following, we propose a method to automatically translate the synergies extracted from data into design specifications for an artificial system. We refer to underactuated structures in the general form introduced (for robotic hands) in ref. 57, with the generalization of the tendon routing included in ref. 40. This class of underactuation strategies58 involves k motors whose rotation angles are the σ(1:k) in equation (1). Each motor is connected to a tendon that goes through the whole kinematic structure, revolving around joint-level pulleys. We collect the radii of these pulleys in a matrix R ∈ Rn×k , and we call Ri,j the radius of the pulley corresponding to the ith joint and the jth tendon. A linear torsional spring is placed parallel to each joint. The stiffness of the spring acting on the ith joint is κi ∈ R, and the complete vector is κ ∈ Rn. Figure 2c shows an example of such a mechanism. We propose
+here to automatically identify and set the optimal stiffnesses k, pulley (1∶k)
+sizes R and tendon routing ρ for a desired synergy S ̂ by solving the following nonlinear mixed-integer optimization problem:
+arg min
+‖̂ +‖2 ‖S(1∶k) − (R ∘ ρ)diag{κ} ‖
+F
+s.t. κ− ≤κi ≤κ+, ∀i∈{1,...,n}
+r− ≤ Ri,j ≤ r+, ∀i ∈ {1,...,n},j ∈ {1,...,k}.
+κ ∈ Rk,R ∈ Rn×k n×k
+(2)
+ρ ∈ {−1,0,1}
+The minimum and maximum allowed stiffnesses are κ−, κ+ and the minimum and maximum allowed radii of the pulleys are r− and r+. Here, ρi,j defines if the tendon is routed counterclockwise, not routed or routed clockwise around the pulley Ri,j. The symbol ∘ is the Hadamard product of the two matrices, also called the element-wise product. The symbol (⋅)+E refers to the Moore–Penrose pseudoinverse of the argu- ment weighted through the matrix E. Finally, ∣∣⋅∣∣F is the Frobenious
+norm of the argument, so the cost function is the squared Frobenious
+(1∶k) + distance between the desired synergy matrix S ̂ and (R ∘ ρ)diag{κ}.
+In the following, we show that (R ∘ ρ)+diag{κ} is the synergy matrix of the mechanical system with physical characteristics κ, R and ρ, thus justifying the definition of the cost function in equation (2). These derivations are akin to the ones proposed for robotic hands in refs. 40,57.
+ Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+394
+
+
+--- PAGE 10 ---
+Article
+https://doi.org/10.1038/s42256-025-00988-x
+ Call the tendon positions x ∈ Rk , then, by using kinetostatic dual- ity, the torque vector τ⊤at the joints and the tendon tension vector τM are related by τ = (R∘ρ) τM. By including a linear elastic force arising from the springs at the joints (diag{κ}q), the equilibrium of the joint torques is achieved. If no exte⊤rnal forces are considered, the static solution can be written as (R∘ρ) τM = diag{κ}q. By solving for q, it yields
+to q = diag{κ}−1R⊤((R ∘ ρ)diag{κ}−1(R ∘ ρ)⊤)−1x. Finally, recalling the defi-
+nition of weighted Moore–Penrose pseudoinverse and that the motor state is our synergy reference variable (that is, x = σ), yields the desired relation S = (R ∘ ρ)+diag{κ}.
+Each synergy is actuated in planar motion by an actuator (Dyna- mixel XL430-W250-T) fixed to the body of the robot, pulling on a tendon that is attached at the very tip of the limb on an axle (see Fig. 1a for a picture of the setup). Hence, for two synergies, two motors are used, one on each side of the leg, leading to a total of four motors for the full system.
+A set of independently actuated tendons, guided by pulleys, run- ning along joints with the stiffness specified in E, is proposed to translate animal movement to a robotic structure, such as in Supplementary Fig. 8.
+Selection of synergies and robot prototype
+When all four limbs are considered, four synergies can provide ~88% explained variance, as shown in Fig. 2. While this is comparatively very high, it is accompanied by the realization challenges of having shared tendons across four legs. Separating fore- and hindlimbs leads to an undesirable disparity in the explained variance between the two limbs, with a lower performance for the forelimbs. Having synergies for left and right limbs or the crossed limbs provides a similar overall performance ~81%, we select to use the synergies with separate left and right limbs, as this simplifies the mechanical design and implementa- tion. With this selected synergy and limb groups, an upper bound of the achievable variance of the motion set can be identified as 79% when using only four actuators, that is, integrating two synergies per half-body. We perform an analysis of how the resulting PCA and syner- gies might change if different kinematic data from different gait types are used (Supplementary Information).
+Therefore, PAWS is composed of two half-bodies, making it sym- metric with respect to the sagittal plane. The robot’s design param- eters are provided in Supplementary Fig. 8a. The joints, pulleys of the transmission system and the central body are three-dimensional (3D) printed from polylactic acid (PLA) on a 3D printer (Prusa Mk-3). Each half-body is driven by two actuated tendons, each corresponding to a synergy. Two motors (Dynamixel XL430-W250-T) actuate each syn- ergy. The robot’s rigid links are connected via ball bearings to a central shaft providing robustness and are also connected via screws to each modular torsional spring module.
+Modular design set. To translate synergies into optimized design specifications we create a modular design that has the following components:
+• Links, which serve as the foundation of the robotic structure and feature a tunable rest position that can be adjusted in
+45∘ increments. They are machined in aluminium using com- puter numerical control system (CNC) technology for precise and accurate fabrication. The lengths of the links are param- eterized so to reflect the animal skeleton and its kinematics.
+• Torsional stiffness joint modules composed of two antagonistic linear springs, a tray and a pulley, which are responsible for pro- viding compliance to the robotic structure as specified by the optimal E matrix. These modules feature tunable torsional stiff- ness that can be adjusted linearly from 325 to 1,092 N mm rad−1 by increasing the radius r of the stiffness pulley, according to equation (3) presented in the ‘Revolute joint design’ section.
+• Tendons, which are responsible for the control of the robotic structure and transmit the force from the motors to the joints. The tendons used are metal with a diameter of 0.4 mm.
+• Guiding pulleys, which are responsible for controlling the motion ratios of the robotic structure at the joints.
+• Feet, which provide floor contact and stability. The balls are cast in Dragon Skin 20 silicon to create compliant and high-friction feet.
+Ball bearings are used in all rotational contacts, to reduce fric- tion and, thus, increase the efficiency and performance of the robotic structure. Aluminium rods are used at each joint along with 3D-printed mechanical stoppers to hold the modules together. Figure 2c shows a render of the assembled view of a three-jointed leg structure using the aforementioned modules. The components are carefully designed and tested to work together in a synergistic manner, resulting in an opti- mized and highly efficient robotic structure that can be easily resized and customized for a wide range of animal structures.
+Revolute joint design. The need for both joint rotation and tunable torsional stiffness in a revolute joint design prompted the creation of a stiffness module incorporating linear springs. The mechanism employs a central stiffness pulley that facilitates rotational motion, with wires attached on two opposite ends. Simultaneously, two linear springs act antagonistically to provide stiffness in both directions as illustrated in Fig. 2d. This design enables a large range of possible stiffnesses by using a pulley reduction with a ratio of 2:1 to maximize the range of stiffness achievable within the linear region of the spring. The modules can be stacked onto the joint and cause them to have a torsional stiffness resulting from the linear stiffness in the modules.
+The torsional stiffness kθ can be calculated by computing the moment at the joint per angle of rotation when the two springs are acting (see Fig. 2d for free-body diagrams)
+(−kdl −kdl)r
+2
+dθ
+With this result, the design enables quadratic scaling of stiffness through the r2 term. Owing to the quadratic relation, the stiffness mod- ule is able to vary the stiffness across a wide range with small changes in the pulley radius. This feature, combined with the 2:1 pulley system enables a wide range of achievable stiffnesses within the linear region of the deformation of the springs.
+Sim2Real transfer
+Given the identified design of the robot from the optimization process, the matching to ideal synergies obtained from the animal data in both simulation and on the real-world hardware can be evaluated. In Fig. 2b and Supplementary Video 1, the simulated motion path enabled by the two independent synergies is shown for that directly from PCA (top), a simulation after the optimization process (centre) and finally deployed in the real world on the robotic hardware (bottom). Here, each synergy is activated, and the ‘foot’ pose of the robot is captured via simulation or video tracking. It can be seen that synergy 1 provides predominantly hindlimb motion, whereas synergy 2 provides mostly forelimb motion; however, there is some coupling between them. The optimization step introduces marginal error in comparison to the PCA results with a loss in joint couplings of 8% and 4% for the first and second synergy, respec- tively. There is also some additional coupling between the legs. When deploying the structure to the real world there is a close similarity in the expected motion path; however, the fore- and hindlimb coupling is further extenuated for both synergies. This is most probably due to
+kθ =−dM =−d[(F− −F+)r] =− dθ dθ
+kθ = 1kr2,sincedl = rdθ 2
+2
+22
+= kr dl
+2 dθ . (3)
+   Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+395
+
+
+--- PAGE 11 ---
+Article
+the optimization constraint of having all the joints coupled. This gap can be quantitatively assessed by measuring the joint activation (that is, the ratio between motor activation and joint motion) for each synergy (Supplementary Fig. 8a). These results show a close mapping for both synergies in joint space, with the optimization step appearing to cause the largest discrepancies.
+Simulation environment
+A simulation environment was built in MATLAB to efficiently test and validate the methods. The simulation calculates and reproduces the motion under tendon actuation of a single limb formed by a series of links, with pulleys of different sizes and joints of different stiffnesses.
+The simulator also contains an optimizer that uses a genetic algo- rithm to minimize equation (2). For a given number of synergies, the genetic algorithm and returns the different design specifications for E and R, namely the pulley radii, tendon routing and joint stiffnesses and visualizes each synergy in action.
+Two examples of three-link designs generated by the optimizer from a given synergy matrix are reported in the Supplementary Fig. 7. This analysis allows for a clear visualization of the excellent mappings between the desired postural synergies and the simple mechanisms generated. Each synergy is independently actuated by the same amount, to demonstrate the resulting motion.
+IKs in synergy space
+Figure 3 shows that the first two synergies of the biological quadruped are sufficient to generate paw evolution necessary to perform a number of motions—such as walking, running, and sitting. Here, we describe the strategy that we used to obtain the low dimensional synergy inputs σ ∈ R2 that match the natural data. The same algorithm is also used to generate the gaits of PAWS. Note that since the two left the two right legs are separately actuated, we consider them separately when solving the IK problem. First, we preprocessed the animal data and projected each of the two end-effector positions of fore- and hindlimbs acquired with motion capture x3D ∈ R12 into the dog’s sagittal plane, resulting in x ∈ R6.
+Next, we use a Jacobian-based kinematic inversion. However, the standard approach would result in joint space configurations q and not in commands in synergy space σ. Instead, we borrow a variation on the method developed within the continuum robotics field, which operates a direct task to actuators inversion59, and we adapt it to syn- ergistic actuation. Call x = fx(q) the standard forward kinematics map- ping the joint coordinates q in the end-effector locations x. We then recall from the ‘Synergy formulation and optimization method’ section that the actuator’s kinematics are q = Sσ, with S = (R ∘ ρ)+diag{κ}. Combining the two maps yields x = fx(Sσ). This composed end-to-end forward kinematics has the Jacobian J(σ) = Jx(Sσ)S, with Jx being the Jacobian of fx. Thus, J is such that ẋ = Jσ̇.
+Having a well-defined differential map, we can then use the follow- ing kinematic inversion scheme to find the σ̄ such that ||x̄ − fx (Sσ)̄ ||2 is minimum, for any given x̄,
+https://doi.org/10.1038/s42256-025-00988-x
+ σ̄̇=α(J(Sσ)̄S)+(x̄−f(Sσ)̄), xx
+(4)
+proposed synergy-based system is suitable for force control following
+the theory of underactuated serial robots with elasticity at the joint
+level60. This short analysis aims to demonstrate that traditional
+force-centred control techniques such as impedance control61 can be
+integrated with the proposed synergy-based designs. In the following,
+we show how a force on a contact point xc can be mapped on tensions
+at the tendon level. By kinetostatic duality, the torque vector ⊤τ at the
+joints and the tendon tension vector τM are related by τ = (R∘ρ) τM. Let
+us consider a force Fc acting at the contact point xc defined by the for-
+ward kinematic mapping xc = fx(Sσ). Under a quasistatic assumption,
+the force Fc can be mapped into tensions at the tendon level by
+τM = S⊤ (J⊤x Fc + diag{κ}Sσ), with Jx being the Jacobian of fx. In case a sensor
+measuring the contact forces Fs is available, it is possible to design a
+closed-loop controller that ensures the convergence to the target
+CartesianforceF̄ asτi+1 =τi +S⊤J⊤(K e+K de),wheree=F̄ −F ,iis x M M x p pdt x s
+an index tracking the iteration of the controller and Kp and Kd are gains of the PD controller. A simple experiment demonstrating closed-loop performance of the synergy-based leg is shown in the supplementary Supplementary Fig. 12.
+Stiffness profiles and mechanical couplings
+Mechanical impedance plays a central role in the interaction between the biological systems and the environment62. To better understand the inherent robustness of the system to external perturbations and environmental excitations, we perform an analysis of the Cartesian stiffness profiles across the workspace of the robot. To quantitatively evaluate the reaction of the system to external perturbation, the robot body was fixed, and the end effector of a Franka Emika Panda robotic arm was secured to one of the paws. While one paw was forced to a grid of poses from the manipulator, the other was left free. As a result, for each pose, the robotic system reaches the equilibrium between the perturbation exerted by the manipulator and the physical impedance defined by the tendon-stiffness system in the robot’s body. A camera was placed perpendicularly to the plane of motion to record the result- ing displacement of the free paw due to mechanical couplings. The experimental setup is visualized in Supplementary Fig. 9a. By perturb- ing the half-dog foot with a given force via the arm along two perpen- dicular directions and measuring the disturbance, the local stiffness ellipsoid can be evaluated in Cartesian space as shown in Supplemen- tary Fig. 9a, centre. During the experiment, both the displacement Δx ∈ R3×v of the paw and the reaction forces F ∈ R3×v were recorded, with v being the number of samples per experiment. Hence, the experimen- tal ellipsoid matrix Kexp ∈ R3×3 is evaluated by minimizing the least square error as Kexp = FΔx+.
+The experimental results show notable variations in both the mag- nitude and direction of stiffness ellipsoids across the workspace. This result becomes more significant when overlapping locomotion trajecto- ries in the workspace, as described in the ‘Stiffness ellipsoid simulation’ section. As shown in the walking example in Supplementary Fig. 9a, right, the impedance of the legs is higher and perpendicular to the trajectory atextremesoftheworkspace,whileitbecomesparalleltothetrajectory and more compliant in the central part of the workspace. Therefore, dur- ing the stance phase, the system is stiffer in the direction of the ground, as to sustain self-weight, while in the flight zone, the end-effector stiff- ness becomes lower so as to react compliantly to perturbations.
+This embodied impedance strategy is a result of the relevant submanifold used to solve the IK. Indeed, as the end-effector posi- tion is achieved in a natural fashion, as shown in the ‘Gait IKs’ section, the configuration-d⊤ependent component of the Cartesian stiffness, formalized by the JJ mapping, where J is the Jacobian of the forward kinematic transformation, reflects biological strategies seen in animal-environment interactions.
+Mechanical couplings. The synergistic routing of the tendons provides mechanical coupling between the fore- and hindlimbs.
+where α is a scalar gain. Note that, for the placing of both feet with two synergies, Jx ∈ R6×2 has more rows than columns. This property indi- cates that the problem is kinematically underactuated, and only a two-dimensional submanifold of the space of all feet postures can be realized precisely. The good performance that is achieved when real- izing gaits is, therefore, a property of the proposed S, which spans the configurations necessary to make this manifold coincide with the feet configurations used by the dog.
+Force control in synergy space
+Forces synergies play a crucial role in the adaptation of the gait or grasp32,35 in biological organisms. While not exploited in this work, the
+ Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+396
+
+
+--- PAGE 12 ---
+Article
+This means when an external disturbance or force is applied to one leg, there is a physically coupled response in the other leg. The response depends on the configuration of the robot and the direction and mag- nitude of the external displacement. This mechanical coupling can be beneficial in terms of coordination between legs when responding to disturbances of environmental factors.
+To visualize this response we apply an external force to one foot, and measure the displacement in the second foot that arises from the mechanical coupling as shown in Supplementary Fig. 9b. When the forelimb is displaced forward, we see a coupled movement of the hindlimb backward and down. The coupled response is much lower when the forelimb is pushed backward, with a response more verti- cally down in the hindlimb. This coupling could assist in overcoming obstacles; when there is a disturbance of obstacle in the forelimb, the hindlimb corresponds, moving down and back to maintain stability.
+When the hindlimb is disturbed, the response is somewhat mini- mal except for when the leg is moved horizontally forward, with the forelimb showing a considerable horizontal motion. Once again, this could prove beneficial to the external disturbances and reflects the trajectories observed in Fig. 5c. The experiment highlights the sensi- tivity of the coupling to both the pose of the robot and the direction of the external force applied.
+Stiffness ellipsoid simulation
+Supplementary Fig. 9 shows the stiffness of ellipsoids at different points in Cartesian space. Simulated and experimental results demon- strate the variation of stiffnesses across the workspace. To model and evaluate the Cartesian stiffness of the structure in Cartesian space for a given pose, that is, q = Sσ , we must first estimate the stiffness at the joint level and then map it to Cartesian space. The compliance of the structure at joint-level Cq, that is, the inverse of the stiffness40, can be found from physical parameters as
+Cq = E−1 − E−1R⊤(RE−1R⊤)−1RE−1. (5) To obtain q = Sσ , the solution of the IK problem in the ‘Gait IKs’
+section, the Cartesian compliance63 at the end effector takes the form
+Cx = J(q)Cq J(q)⊤ . (6)
+This analysis can be performed in both simulations and on the real robot.
+Experimental setup
+The experimental setup used for the experiments presented in the ‘Pas- sive properties’ and ‘Behaviour diversity of the full quadruped’ sections and shown in Fig. 5a was developed to assess the robot’s response to environmental excitations. Inspired by the experimental setup devel- oped in ref. 29, the platform is composed of a treadmill (Gonser Walk- ing Pad) with adjustable speeds and a guiding system composed of a four-bar linkage. The treadmill settings were adjusted to achieve speeds ranging from 1 to 6 km h−1 in 0.5 km h−1 increments. Alternatively, for slower speeds, the treadmill speed was directly connected to a power supply voltage, thus controlling the speed by varying the input current. To constrain the robot’s movements to the sagittal plane, a four-bar mechanism was designed to connect the robot’s body to a fixed frame. These links of the mechanism were utilized to support a counterweight, ranging from 1.5 to 3 kg, for the half-body and the four-legged body respectively. The mechanism was connected to a metallic frame, which was securely attached to the ceiling. This configuration allowed for a pendulum-like movement, effectively constraining pitching and restricting the robot to translations in the sagittal plane (fore–aft and up–down). As the synergy analysis was performed on the sagittal plane of animals, this setup proved particularly suitable for testing emerging passive motions. To test active motions, two Dynamixel XL430-W250-T
+https://doi.org/10.1038/s42256-025-00988-x
+ motors were used for each half-body. These motors were connected at the base to control each synergy using two tendons, accommodat- ing both positive and negative directions. The contributions of both motors were linearly combined to generate the desired motions. The control signals were transmitted to the motors through the Dynamixel motor controller through Dynamixel Python SDK. The motor control- ler was powered by a dedicated power supply, thus requiring external power to actuate the robotic system.
+In the free-body experiments shown in Fig. 6c, the robot was left without any gravity compensation or stabilizing mechanism, but it was connected to the external power supply and to an external computer to send the motor activation commands. In the free-walking experiment in Fig. 6e, the robot was loosely connected to an external tendon to provide stabilizing support during the locomotion gait.
+Computer vision setup and motion tracking techniques
+To analyse the movement of the limbs in the sagittal plane of the real system, the recorded videos were postprocessed using Kinovea64, an open-source motion tracking software. The software facilitated the analysis of the joint angle evolutions over time from the recorded videos. In addition, Kinovea allowed for the tracing and extraction of the trajectories of the limb’s end effector, from which the Cartesian pose could be extracted in either the robot or world frame coordinates.
+In all experiments, a camera (Logitech Brio 500) was placed perpendicularly to the plane of analysis, at a notable distance with respect to the displacements under measure, to minimize distortions arising in the pixel-to-metre mapping. The calibration of coordinates from pixels to millimeters was found by measuring the pixel length corresponding to the known distance of 320 mm between the hip joint and the shoulder joint of the robot in the video footage. This measurement served as a calibration factor, and all pixel lengths were multiplied by this factor to obtain the corresponding millimetre measurements.
+Reporting summary
+Further information on research design is available in the Nature Portfolio Reporting Summary linked to this article.
+Data availability
+The real-world dog motion capture dataset used in this study was obtained from a publicly accessible source, referenced in ref. 52, via GitHub at https://github.com/sebastianstarke/AI4Animation (ref. 67). The source mentions that the dog motion data are provided to them by Bandai-Namco Studios and are available under the terms of the Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license. The motion capture dataset was processed and analysed using the MoCap Toolbox65 in MATLAB, while experimental robot trajectories were extracted from video using the open-source software Kinovea64 and sensor readings from the Franka Emika Panda robot. All data used and generated in this study are available via GitHub at https://github. com/fstella97/PAWS.git and via Zenodo at https://doi.org/10.5281/ zenodo.13833652 (refs. 66–73).
+Code availability
+The source code for this study is freely available via GitHub at https:// github.com/fstella97/PAWS.git and via Zenodo at https://doi. org/10.5281/zenodo.13833652 (ref. 66).
+References
+1. Alexander, R. M. The gaits of bipedal and quadrupedal animals. Int. J. Robot. Res. 3, 49–59 (1984).
+2. Joly, K. et al. Longest terrestrial migrations and movements around the world. Sci. Rep. 9, 15333 (2019).
+3. Biswal, P. & Mohanty, P. K. Development of quadruped walking robots: a review. Ain Shams Eng. J. 12, 2017–2031 (2021).
+ Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+397
+
+
+--- PAGE 13 ---
+Article
+4. Tranzatto, M. et al. Cerberus in the darpa subterranean challenge. Sci. Robot. 7, eabp9742 (2022).
+5. Abad, S.-A., Sornkarn, N. & Nanayakkara, T. The role of morphological computation of the goat hoof in slip reduction. In 2016 IEEE/RSJ Int. Conference on Intelligent Robots and Systems 5599–5605 (IEEE, 2016).
+6. Roberts, T. J. & Azizi, E. Flexible mechanisms: the diverse roles of biological springs in vertebrate movement. J. Exp. Biol. 214, 353–361 (2011).
+7. Rubenson, J. & Sawicki, G. S. Running birds reveal secrets for legged robot design. Sci. Robot. 7, eabo2147 (2022).
+8. Hutter, M. et al. Anymal—a highly mobile and dynamic quadrupedal robot. In 2016 IEEE/RSJ Int. Conference on Intelligent Robots and Systems 38–44 (IEEE, 2016).
+9. Katz, B., Di Carlo, J. & Kim, S. Mini cheetah: a platform for pushing the limits of dynamic quadruped control. In 2019 Int. Conference on Robotics and Automation 6295–6301 (IEEE, 2019).
+10. Léziart, P.-A., Flayols, T., Grimminger, F., Mansard, N. & Souères, P. Implementation of a reactive walking controller for the new open-hardware quadruped solo-12. In 2021 IEEE Int. Conference on Robotics and Automation 5007–5013 (IEEE, 2021).
+11. Mastalli, C. et al. Agile maneuvers in legged robots: a predictive control approach. Preprint at arXiv https://doi.org/10.48550/ arXiv.2203.07554 (2022).
+12. Hwangbo, J. et al. Learning agile and dynamic motor skills for legged robots. Sci. Robot. 4, eaau5872 (2019).
+13. Miki, T. et al. Learning robust perceptive locomotion for quadrupedal robots in the wild. Sci. Robot. 7, eabk2822 (2022).
+14. Yu, F. et al. Brain-inspired multimodal hybrid neural network for
+robot place recognition. Sci. Robot. 8, eabm6996 (2023).
+15. McGeer, T. et al. Passive dynamic walking. Int. J. Robot. Res. 9,
+62–82 (1990).
+16. Hobbelen, D. G. & Wisse, M. Controlling the walking speed in limit
+cycle walking. Int. J. Robot. Res. 27, 989–1005 (2008).
+17. Iqbal, S., Zang, X., Zhu, Y. & Zhao, J. Bifurcations and chaos
+in passive dynamic walking: a review. Robot. Auton. Syst. 62,
+889–909 (2014).
+18. Znegui, W., Gritli, H. & Belghith, S. A new poincaré map for
+investigating the complex walking behavior of the compass-gait
+biped robot. Appl. Math. Model. 94, 534–557 (2021).
+19. Spong, M. W. & Bullo, F. Controlled symmetries and passive
+walking. IEEE Trans Automat. Contr. 50, 1025–1031 (2005).
+20. Tedrake, R., Zhang, T. W., Fong, M. -F. & Seung, H. S. Actuating
+a simple 3D passive dynamic walker. In IEEE Int. Conference on
+Robotics and Automation 4656–4661 (IEEE, 2004).
+21. Pfeifer, R., Lungarella, M. & Iida, F. Self-organization, embodiment,
+and biologically inspired robotics. Science 318, 1088–1093
+(2007).
+22. Iida, F. & Pfeifer, R. Cheap rapid locomotion of a quadruped robot:
+self-stabilization of bounding gait. In Intelligent Autonomous
+Systems 642–649 (IOS Press Amsterdam, 2004).
+23. Spröwitz, A. et al. Towards dynamic trot gait locomotion:
+design, control, and experiments with cheetah-cub, a compliant
+quadruped robot. Int. J. Robotics Res. 32, 932–950 (2013).
+24. Fukuhara, A., Gunji, M. & Masuda, Y. Comparative anatomy of
+quadruped robots and animals: a review. Adv. Robot. 36, 612–630
+(2022).
+25. Calisti, M., Picardi, G. & Laschi, C. Fundamentals of soft robot
+locomotion. J. R. Soc. Interface 14, 20170101 (2017).
+26. Calzolari, D., Della Santina, C., Giordano, A. M. & Albu-Schäffer, A.
+Single-leg forward hopping via nonlinear modes. In 2022
+American Control Conference 506–513 (IEEE, 2022).
+27. Büsse, S., Koehnsen, A., Rajabi, H. & Gorb, S. N. A controllable
+dual-catapult system inspired by the biomechanics of the dragonfly larvae’s predatory strike. Sci. Robot. 6, eabc8170 (2021).
+https://doi.org/10.1038/s42256-025-00988-x
+ 28. Matsumoto, O., Tanaka, H., Kawasetsu, T. & Hosoda, K. High-speed running quadruped robot with a multi-joint spine adopting a 1dof closed-loop linkage. Front. Robot. AI 10, 1148816 (2023).
+29. Badri-Spröwitz, A., Aghamaleki Sarvestani, A., Sitti, M. & Daley, M. A. Birdbot achieves energy-efficient gait with minimal control using avian-inspired leg clutching. Sci. Robot. 7, eabg4055 (2022).
+30. Latash, M. L., Scholz, J. P. & Schöner, G. Toward a new theory of motor synergies. Mot. Control 11, 276–308 (2007).
+31. Winter, D. A. Biomechanics and Motor Control of Human Movement (John Wiley and Sons, 2009).
+32. Santello, M. & Soechting, J. F. Force synergies for multifingered grasping. Exper. Brain Res. 133, 457–467 (2000).
+33. Santello, M. et al. Hand synergies: integration of robotics and neuroscience for understanding the control of biological and artificial hands. Phys. Life Rev. 17, 1–23 (2016).
+34. Ficuciello, F., Migliozzi, A., Laudante, G., Falco, P. & Siciliano, B. Vision-based grasp learning of an anthropomorphic hand-arm system in a synergy-based control framework. Sci. Robot. 4, eaao4900 (2019).
+35. Starke, J., Chatzilygeroudis, K., Billard, A. & Asfour, T. On force synergies in human grasping behavior. In 2019 IEEE-RAS 19th Int. Conference on Humanoid Robots (Humanoids) 72–78 (IEEE, 2019).
+36. Dominijanni, G. et al. The neural resource allocation problem when enhancing human bodies with extra robotic limbs. Nat. Mach. Intell. 3, 850–860 (2021).
+37. Averta, G., Della Santina, C., Valenza, G., Bicchi, A. & Bianchi, M. Exploiting upper-limb functional principal components for human-like motion generation of anthropomorphic robots.
+J. NeuroEng. Rehab. 17, 1–15 (2020).
+38. Wei, Q., Li, Z., Zhao, K., Kang, Y. & Su, C.-Y. Synergy-based control of assistive lower-limb exoskeletons by skill transfer. IEEE/ASME Trans. Mechatron. 25, 705–715 (2019).
+39. Brown, C. Y. & Asada, H. H. Inter-finger coordination and postural synergies in robot hands via mechanical implementation of principal components analysis. In 2007 IEEE/RSJ Int. Conference on Intelligent Robots and Systems 2877–2882 (IEEE, 2007).
+40. Della Santina, C., Piazza, C., Grioli, G., Catalano, M. G. & Bicchi, A. Toward dexterous manipulation with augmented adaptive synergies: the pisa/iit softhand 2. IEEE Trans. Robot. 34, 1141–1156 (2018).
+41. Laffranchi, M. et al. The hannes hand prosthesis replicates the key biological properties of the human hand. Sci. Robot. 5, eabb0467 (2020).
+42. Hidalgo-Carvajal, D., Herneth, C., Naceri, A. & Haddadin, S. End-to-end from human hand synergies to robot hand tendon routing. IEEE Robot. Automat. Lett. 7, 10057–10064 (2022).
+43. Sardinha, E. N., Garate, V. R., Jafari, A. & Etoundi, A. Embedding soft synergies into soft materials for intrinsic compliant robotic hand grasping. In 2022 IEEE/ASME Int. Conference on Advanced Intelligent Mechatronics 1670–1676 (IEEE, 2022).
+44. Hoff, J., Ramezani, A., Chung, S.-J. & Hutchinson, S. Optimizing the structure and movement of a robotic bat with biological kinematic synergies. Int. J. Robotics Res. 37, 1233–1252
+(2018).
+45. Hoff, J., Ramezani, A., Chung, S.-J. & Hutchinson, S. Synergistic design of a bio-inspired micro aerial vehicle with articulated wings. In Proc. Robotics: Science and Systems 12 (2016).
+46. Hauser, H., Neumann, G., Ijspeert, A. J. & Maass, W. Biologically inspired kinematic synergies provide a new paradigm for balance control of humanoid robots. In 2007 7th IEEE-RAS Int. Conference on Humanoid Robots 73–80 (IEEE, 2007).
+47. Hauser, H., Neumann, G., Ijspeert, A. J. & Maass, W. Biologically inspired kinematic synergies enable linear balance control of a humanoid robot. Biol. Cybern. 104, 235–249 (2011).
+ Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+398
+
+
+--- PAGE 14 ---
+Article
+48. Wilson, A. M., Watson, J. C. & Lichtwark, G. A. A catapult action for rapid limb protraction. Nature 421, 35–36 (2003).
+49. Yamada, Y., Nishikawa, S., Shida, K., Niiyama, R. & Kuniyoshi, Y. Neural-body coupling for emergent locomotion: a musculoskeletal quadruped robot with spinobulbar model. In 2011 IEEE/RSJ Int. Conference on Intelligent Robots and Systems 1499–1506 (IEEE, 2011).
+50. Juvin, L., Simmers, J. & Morin, D. Propriospinal circuitry underlying interlimb coordination in mammalian quadrupedal locomotion.
+J. Neurosci. 25, 6025–6035 (2005).
+51. Thota, A. K., Watson, S. C., Knapp, E., Thompson, B. & Jung, R. Neuromechanical control of locomotion in the rat. J. Neurotrauma 22, 442–465 (2005).
+52. Zhang, H., Starke, S., Komura, T. & Saito, J. Mode-adaptive neural networks for quadruped motion control. ACM Trans. Graph. 37, 1–11 (2018).
+53. Owaki, D. & Ishiguro, A. A quadruped robot exhibiting spontaneous gait transitions from walking to trotting to galloping. Sci. Rep. 7, 1–10 (2017).
+54. Ekeberg, O. & Pearson, K. Computer simulation of stepping in the hind legs of the cat: an examination of mechanisms regulating the stance-to-swing transition. J. Neurophysiol. 94, 4256–4268 (2005).
+55. Santello, M., Flanders, M. & Soechting, J. F. Postural hand synergies for tool use. J. Neurosci. 18, 10105–10115 (1998).
+56. Safonova, A., Hodgins, J. K. & Pollard, N. S. Synthesizing physically realistic human motion in low-dimensional, behavior-specific spaces. ACM Trans. Graph. 23, 514–521 (2004).
+57. Grioli, G., Catalano, M., Silvestro, E., Tono, S. & Bicchi, A. Adaptive synergies: an approach to the design of under-actuated robotic hands. In 2012 IEEE/RSJ Int. Conference on Intelligent Robots and Systems 1251–1256 (IEEE, 2012).
+58. Birglen, L., Laliberté, T. & Gosselin, C. M. Underactuated Robotic Hands (Springer, 2007).
+59. Della Santina, C., Duriez, C. & Rus, D. Model-based control of soft robots: a survey of the state of the art and open challenges.
+IEEE Control Syst. 43, 30–65 (2023).
+60. De Luca, A., Mattone, R. & Oriolo, G. Stabilization of underactuated robots: Theory and experiments for a planar 2r manipulator. In Proc. Int. Conference on Robotics and Automation 3274–3280 (IEEE, 1997).
+61. Semini, C. et al. Towards versatile legged robots through active impedance control. Int. J. Robotics Res. 34, 1003–1020 (2015).
+62. Hogan, N. Impedance control: an approach to manipulation. In 1984 American Control Conference 304–313 (IEEE, 1984).
+63. Stella,F.,Hughes,J.,Rus,D.&DellaSantina,C.Prescribing cartesian stiffness of soft robots by co-optimization of shape and segment-level stiffness. Soft Robot. 10, 701–712 (2023).
+64. Charmant,J.&contributors.Kinovea(0.9.5).Kinovea https://www.kinovea.org (2023).
+65. Burger, B. & Toiviainen, P. MoCap Toolbox—a Matlab toolbox for computational analysis of movement data. In Proc. 10th Sound and Music Computing Conference (ed. Bresin, R.) 172–178
+(KTH Royal Institute of Technology, 2013).
+66. Stella, F. Paws code and data. Zenodo https://doi.org/10.5281/ zenodo.13833652 (2024).
+67. Starke, S. et al. AI4Animation: deep learning for character control. GitHub https://github.com/sebastianstarke/AI4Animation (2024).
+68. Kashiri, N. et al. An overview on principles for energy efficient robot locomotion. Front. Robot. AI 5, 129 (2018).
+69. Hutter, M. et al. in Adaptive Mobile Robotics 483–490 (World Scientific, 2012).
+70. Remy, C. D. Optimal Exploitation of Natural Dynamics in Legged Locomotion. Thesis, ETH Zurich (2011).
+https://doi.org/10.1038/s42256-025-00988-x
+ 71. Gan, Z., Wiestner, T., Weishaupt, M. A., Waldern, N. M. &
+David Remy, C. Passive dynamics explain quadrupedal walking, trotting, and tölting. J. Comput. Nonlinear Dyn. 11, 021008 (2016).
+72. Calzolari, D., Della Santina, C., Giordano, A. M., Schmidt, A. & Albu-Schäffer, A. Embodying quasi-passive modal trotting and pronking in a sagittal elastic quadruped. IEEE Robot. Automat. Lett. 8, 2285–2292 (2023).
+73. Della Santina, C., Calzolari, D., Giordano, A. M. & Albu-Schäffer, A. Actuating eigenmanifolds of conservative mechanical systems via bounded or impulsive control actions. IEEE Robot. Automat. Lett. 6, 2783–2790 (2021).
+Acknowledgements
+The research of Cosimo Della Santina is supported by the Horizon Europe Program from Project EMERGE grant agreement no. 101070918.
+Author contributions
+F.S.: conceptualization, synergy theory and simulation, hardware design and experiments, writing, review and editing, result analysis and visualization. M.M.A: hardware design and experiments, motion data extraction and analysis, result analysis and visualization, writing and review and editing. C.D.S.: conceptualization, experiment design, supervision, writing and review and editing. J.H.: conceptualization, experiment design, writing, review and editing, supervision and funding acquisition.
+Funding
+Open access funding provided by EPFL Lausanne.
+Competing interests
+The authors declare no competing interests.
+Additional information
+Supplementary information The online version contains supplementary material available at https://doi.org/10.1038/s42256-025-00988-x.
+Correspondence and requests for materials should be addressed to Francesco Stella.
+Peer review information Nature Machine Intelligence thanks Gionata Salvietti and the other, anonymous, reviewer(s) for their contribution to the peer review of this work.
+Reprints and permissions information is available at www.nature.com/reprints.
+Publisher’s note Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons. org/licenses/by/4.0/.
+© The Author(s) 2025
+ Nature Machine Intelligence | Volume 7 | March 2025 | 386–399
+399
+
+
+--- PAGE 15 ---
+                           
+
+--- PAGE 16 ---
+                                   
+
+--- PAGE 17 ---
+                                           
+
+--- PAGE 18 ---
+                          
+
+--- PAGE 19 ---
+                                             
+
+--- PAGE 20 ---
+                

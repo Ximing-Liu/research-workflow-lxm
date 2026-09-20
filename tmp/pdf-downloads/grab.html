@@ -1,0 +1,2338 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+<title>The GRAB Lab at Yale University - Publications</title>
+<meta name="description" content="List of scholarly publications from the GRAB Lab at Yale University, under the direction of Professor Aaron Dollar">
+<link rel="stylesheet" href="style.css">
+<script language="JavaScript" src="imageswap.js"></script>
+<script language="JavaScript" src="prototype.js"></script>
+<script>
+	function detectHash(){
+		if (location.hash.length > 0){
+			//accepting only categories - assume only a valid category will be passed in
+			var cat = location.hash.substring(1);
+			var categories = $("category").childElements();
+			for (var i=0;i<categories.length;i++){
+				if (categories[i].value == cat){
+					$("category").value = cat;
+					updateResults();
+					break;
+				}
+			}
+		}
+	}
+
+	function validateAuthor(author,pub){
+		var pub_authors = pub.select(".pub_authors");
+		if (pub_authors.size() > 0){	//multiple authors but in one element
+			return (author==0 || pub_authors[0].innerHTML.indexOf(author)>=0);
+		} else {
+			return author==0;
+		}
+	}
+	function validateYear(year,pub){
+		var pub_year = pub.select(".pub_year");
+		if (pub_year.size() > 0){	//single year
+			return (year == pub_year[0].innerHTML || year==0);		//string comparison, not number comparison
+		} else {
+			return year==0;
+		}
+	}
+	function validateCategory(category,pub){
+		var categories = pub.select(".pub_categories");
+		if (categories.size() > 0){
+			//parse through available categories
+			for (var i=0; i<categories.size(); i++){
+				if (category==categories[i].innerHTML){
+					return true;
+				}
+			}
+			return category==0;
+		} else {
+			return category==0;
+		}
+	}
+	function validatePub(pub,author,year,category){
+		return validateCategory(category,pub) && validateAuthor(author,pub) && validateYear(year,pub);
+	}
+	function updateResults(){
+		var year = $("year").value;
+		var category = $("category").value;
+		var author = $("author").value;
+
+		var pubs = $$(".pub");
+		for (var i=0;i<pubs.length;i++){		//iterate through denoted publications
+			if (validatePub(pubs[i],author,year,category)){
+				pubs[i].show();
+			} else {
+				pubs[i].hide();
+			}
+		}
+	}
+	function toggleFilter(){
+		if ($("selectFilters").visible()){
+			$("selectFilters").hide();
+		} else {
+			$("selectFilters").show();
+		}
+	}
+</script>
+</head>
+
+<body onload="detectHash(); banner_load();">
+
+<!-- Large Bounding Rectangle -->
+
+<table class="black" width="902" align="center" border="0" cellpadding="1" cellspacing="0">
+<tr valign="top"><td>
+
+<!-- Begin Banner -->
+
+<table class="white" width="900" align="center" border="0" cellpadding="0" cellspacing="0"><tr valign="top"><td colspan="2"><a href="index.html"><img id="random_image" src="pics/banner_blank.jpg" alt="Yale GRAB Lab Banner" width="900" border="0"></a></td></tr></table>
+
+<table class="navbg" width="900" align="center" border="0" cellpadding="0" cellspacing="0">
+<tr valign="top">
+
+<td><a href="index.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('document.ImageA','document.ImageA','pics/home1.jpg')"><img src="pics/home.jpg" alt="home" name="ImageA" border="0"></a></td>
+
+<td><a href="people.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('document.ImageB','document.ImageB','pics/people1.jpg')"><img src="pics/people.jpg" alt="people" name="ImageB" border="0"></a></td>
+
+<td><a href="research.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('document.ImageC','document.ImageC','pics/research1.jpg')"><img src="pics/research.jpg" alt="research" name="ImageC" border="0"></a></td>
+
+<td><a href="pubs.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('document.ImageD','document.ImageD','pics/pubs1.jpg')"><img src="pics/pubs.jpg" alt="publications" name="ImageD" border="0"></a></td>
+
+<td><a href="links.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('document.ImageE','document.ImageE','pics/links1.jpg')"><img src="pics/links.jpg" alt="links" name="ImageE" border="0"></a></td>
+
+<td><a href="news.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('document.ImageF','document.ImageF','pics/news1.jpg')"><img src="pics/news.jpg" alt="news" name="ImageF" border="0"></a></td>
+
+</tr></table>
+
+<!-- End Banner -->
+
+<!-- Main Content Table -->
+<table class="white" width="900" align="center" border="0" cellpadding="0" cellspacing="0">
+<tr valign="top"><td valign="top">
+
+<!-- Table for Padding -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr height="20"><td width="40">&nbsp;</td><td></td><td width="40">&nbsp;</td></tr>
+<tr><td><!--blank space - left col--></td><td>
+<table border="0" cellpadding="0" cellspacing="0"><tr><td>
+
+<!-- Formatting Table -->
+<table class="pubs-body" width="650" border="0" cellpadding="0" cellspacing="0">
+
+<!-- Filtering drop-down menus -->
+<tr><td class="bibliography"><a href="javascript:toggleFilter()" style="float:right;">Show/hide filters</a></td></tr>
+
+<tr id="selectFilters"><td class="bibliography">
+	<label for="category" class="select_label">Select Category:</label>
+	<select name="category" id="category" onchange="updateResults();">
+		<option value=0>All Research Categories</option>
+		<option value="ActiveOrthoses">Active Orthoses</option>
+		<option value="AerialManipulation">Aerial Manipulation</option>
+		<option value="Benchmarking">Benchmarking</option>
+		<option value="BiologicalHands">Biological Hands</option>
+		<option value="CellularRoboticsandMaterials">Cellular Robotics and Materials</option>
+		<option value="DeepLearning">Deep Learning</option>
+		<option value="DexterousManipulation">Dexterous Manipulation</option>
+		<option value="Education">Education</option>
+		<option value="FabricationTechniques">Fabrication Techniques</option>
+		<option value="Haptics">Haptics</option>
+		<option value="HumanGraspingandManipulation">Human Grasping and Manipulation</option>
+		<option value="Human-SafeRobots">Human-Safe Robots</option>
+		<option value="LegBiomechanics">Leg Biomechanics</option>
+		<option value="LeggedRobots">Legged Robots</option>
+		<option value="MobileRobots">Mobile Robots</option>
+		<option value="ModelingofFlexuralJoints">Modeling of Flexural Joints</option>
+		<option value="ParallelManipulators">Parallel Manipulators</option>
+		<option value="Prosthetics">Prosthetics</option>
+		<option value="RoboticGrasping">Robotic Grasping</option>
+		<option value="RobustRoboticMechanisms">Robust Robotic Mechanisms</option>
+		<option value="Sensors">Sensors</option>
+		<option value="Simulation">Simulation</option>
+		<option value="UnderactuatedMechanisms">Underactuated Mechanisms</option>
+		<option value="VirtualReality">Virtual Reality</option>
+	</select> <br>
+
+	<label for="author" class="select_label">Select Author:</label>
+	<select name="author" id="author" onchange="updateResults();">
+		<option value=0>All Authors</option>
+		<option value="Ravi Balasubramanian">Ravi Balasubramanian</option>
+		<option value="Spencer B. Backus">Spencer B. Backus</option>
+		<option value="Neil Bajaj">Neil Bajaj</option>
+		<option value="Quentin Bateux">Quentin Bateux</option>
+		<option value="Joseph T. Belter">Joseph T. Belter</option>
+		<option value="Daniel R. Bersak">Daniel R. Bersak</option>
+		<option value="Joao Bimbo">Joao Bimbo</option>
+		<option value="Walter G. Bircher">Walter G. Bircher</option>
+		<option value="Julia Borras-Sol">Julia Borras-Sol</option>
+		<option value="Ian M. Bullock">Ian M. Bullock</option>
+		<option value="Berk Calli">Berk Calli</option>
+		<option value="Jillian Cochran">Jillian Cochran</option>
+		<option value="Massimo Cenciarini">Massimo Cenciarini</option>
+		<option value="Aaron M. Dollar">Aaron M. Dollar</option>
+		<option value="Thomas Feix">Thomas Feix</option>
+		<option value="Kevin D. Gemmell">Kevin D. Gemmell</option>
+		<option value="Yuri Gloumakov">Yuri Gloumakov</option>
+		<option value="Kaiyu Hang">Kaiyu Hang</option>
+		<option value="Mei Hao">Mei Hao</option>
+		<option value="Jimin Hong">Jimin Hong</option>
+		<option value="Jinhoo Kim">Jimin Hong</option>
+		<option value="Joshua T. Grace">Joshua T. Grace</option>
+		<option value="Oren Y. Kanner">Oren Y. Kanner</option>
+		<option value="Michael T. Leddy">Michael T. Leddy</option>
+		<option value="Minas V. Liarokapis">Minas V. Liarokapis</option>
+		<option value="Raymond R. Ma">Raymond R. Ma</option>
+		<option value="Connor M. McCann">Connor M. McCann</option>
+		<option value="Andrew S. Morgan">Andrew S. Morgan</option>
+		<option value="Ahsan I. Nawroj">Ahsan I. Nawroj</option>
+		<option value="Seonghoon Noh">Seonghoon Noh</option>
+		<option value="Lael U. Odhner">Lael U. Odhner</option>
+		<option value="Vatsal V. Patel">Vatsal V. Patel</option>
+		<option value="Pauline E.I. Pounds">Pauline E.I. Pounds</option>
+		<option value="Nicolas Rojas">Nicolas Rojas</option>
+		<option value="Kamran Shamaei">Kamran Shamaei</option>
+		<option value="Adam J. Spiers">Adam J. Spiers</option>
+		<option value="John P. Swensen">John P. Swensen</option>
+		<option value="Hari Vasudevan">Hari Vasudevan</option>
+		<option value="Adam Seewald">Adam Seewald</option>
+		<option value="Zhe Xu">Zhe Xu</option>
+	</select> <br>
+
+	<label for="year" class="select_label">Select Year:</label>
+	<select name="year" id="year" onchange="updateResults();">
+		<option value=0>All years</option>
+		<option value=2025>2026</option>
+		<option value=2025>2025</option>
+		<option value=2024>2024</option>
+		<option value=2023>2023</option>
+		<option value=2022>2022</option>
+		<option value=2021>2021</option>
+		<option value=2020>2020</option>
+		<option value=2019>2019</option>
+		<option value=2018>2018</option>
+		<option value=2017>2017</option>
+		<option value=2016>2016</option>
+		<option value=2015>2015</option>
+		<option value=2014>2014</option>
+		<option value=2013>2013</option>
+		<option value=2012>2012</option>
+		<option value=2011>2011</option>
+		<option value=2010>2010</option>
+		<option value=2009>2009</option>
+		<option value=2008>2008</option>
+		<option value=2007>2007</option>
+		<option value=2006>2006</option>
+	</select>
+</td></tr>
+
+<!-- Content Starts -->
+
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+
+<tr><td class="title">Recent Publications</td></tr>
+
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+
+<tr><td class="bibliography">
+
+<span class="pub">
+<span class="pub_authors">Yifan Zhu, Tianyi Xiang, Aaron M. Dollar, and Zherong Pan</span><br>
+<a href="https://ieeexplore.ieee.org/abstract/document/10982102" target="_blank">One-Shot Real-to-Sim via End-to-End Differentiable Simulation and Rendering,</a> IEEE Robotics and Automation Letters, Vol. 10, No. 6, 2025.<br><br>
+	<span class="pub_categories">Simulation</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yifan Zhu, Mei Hao, Xupeng Zhu, Quentin Bateux, Alex Wong, and Aaron M. Dollar</span><br>
+<a href="https://www.science.org/doi/full/10.1126/scirobotics.adq5046" target="_blank">Forces for free: Vision-based contact force estimation with a compliant hand,</a> Science Robotics, Vol. 10, No. 103, 2025.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Quentin Bateux, Jonathan Koss, Patrick W. Sweeney, Erika Edwards, Nelson Rios, and Aaron M. Dollar</span><br>
+<a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1013650" target="_blank">Improving the accuracy of automated labeling of specimen images datasets via a confidence-based process,</a> PLOS Computational Biology, 2025.<br><br>
+	<span class="pub_categories">DeepLearning</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Vatsal V. Patel and Aaron M. Dollar</span><br>
+<a href="https://rdcu.be/ew8ol" target="_blank">Combining Grasping and Rotation with a Spherical Robot Hand Mechanism,</a> Nature Machine Intelligence, 2025.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+	<span class="pub_authors">Podshara Chanrungmaneekul, Yiting Chen, Joshua T. Grace, Aaron M. Dollar, and Kaiyu Hang</span><br>
+	<a href="https://ieeexplore.ieee.org/abstract/document/11247782" target="_blank">ARC-Calib: Autonomous Markerless Camera-to-Robot Calibration via Exploratory Robot Motions,</a> proceedings of the 2025 IEEE International Conference on Intelligent Robots and Systems (IROS), 2025. <br><br>
+		<span class="pub_categories">DexterousManipulation</span>
+		<span class="pub_year">2025</span>
+	</span>
+
+<span class="pub">
+	<span class="pub_authors">Joshua T. Grace, Podshara Chanrungmaneekul, Kaiyu Hang, and Aaron M. Dollar</span><br>
+	<a href="pubs/Grace_IROS2025.pdf" target="_blank">On the Role of Jacobians in Robust Manipulation,</a> proceedings of the 2025 IEEE International Conference on Intelligent Robots and Systems (IROS), 2025. <br><br>
+		<span class="pub_categories">DexterousManipulation</span>
+		<span class="pub_year">2025</span>
+	</span>
+
+
+<span class="pub">
+	<span class="pub_authors">Yinkai Dong*, Jehyeok Kim*, Vatsal V. Patel, Huijuan Feng, and Aaron M. Dollar</span><br>
+	<a href="pubs/Dong_ICRA2025.pdf" target="_blank">Model Q-II: An Underactuated Hand with Enhanced Grasping Modes and Primitives for Dexterous Manipulation,</a> proceedings of the 2025 IEEE International Conference on Robotics and Automation (ICRA), 2025.<br><br>
+		<span class="pub_categories">DexterousManipulation</span>
+		<span class="pub_categories">RoboticGrasping</span>
+		<span class="pub_year">2025</span>
+	</span>
+
+</td></tr>
+
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+
+<tr><td class="title">Refereed Journal Articles and Book Chapters</td></tr>
+
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+
+<tr><td class="bibliography">
+
+<span class="pub">
+<span class="pub_authors">Yifan Zhu, Tianyi Xiang, Aaron M. Dollar, and Zherong Pan</span><br>
+<a href="https://ieeexplore.ieee.org/abstract/document/10982102" target="_blank">One-Shot Real-to-Sim via End-to-End Differentiable Simulation and Rendering,</a> IEEE Robotics and Automation Letters, Vol. 10, No. 6, 2025.<br><br>
+	<span class="pub_categories">Simulation</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yifan Zhu, Mei Hao, Xupeng Zhu, Quentin Bateux, Alex Wong, and Aaron M. Dollar</span><br>
+<a href="https://www.science.org/doi/full/10.1126/scirobotics.adq5046" target="_blank">Forces for free: Vision-based contact force estimation with a compliant hand,</a> Science Robotics, Vol. 10, No. 103, 2025.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Quentin Bateux, Jonathan Koss, Patrick W. Sweeney, Erika Edwards, Nelson Rios, and Aaron M. Dollar</span><br>
+<a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1013650" target="_blank">Improving the accuracy of automated labeling of specimen images datasets via a confidence-based process,</a> PLOS Computational Biology, 2025.<br><br>
+	<span class="pub_categories">DeepLearning</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Vatsal V. Patel and Aaron M. Dollar</span><br>
+<a href="https://rdcu.be/ew8ol" target="_blank">Combining Grasping and Rotation with a Spherical Robot Hand Mechanism,</a> Nature Machine Intelligence, 2025.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Yuri Gloumakov, and Aaron M. Dollar</span><br>
+<a href="https://ieeexplore.ieee.org/abstract/document/10478747" target="_blank">Transradial Amputee Reaching: Compensatory Motion Quantification Versus Unaffected Individuals Including Bracing,</a> IEEE Transactions on Medical Robotics and Bionics, Vol. 6, No. 2, 2024.<br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2024</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Zhe Xu and Aaron M. Dollar</span><br>
+<a href="https://rdcu.be/d7QCd" target="_blank">The CLaP System: Chain-based Lattice Printing for Efficient Robotically-Assembled Structures,</a> Nature Communications Engineering, vol 3(1), 157, 2024.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2024</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Gaurav Singh, Ahsan Nawroj, and Aaron M. Dollar</span><br>
+<a href="https://asmedigitalcollection.asme.org/mechanismsrobotics/article/15/2/021012/1141074/Mechanical-Characterization-of-Compliant-Cellular" target="_blank">Mechanical Characterization of Compliant Cellular Robots. Part I: Passive Stiffness,</a> ASME Journal of Mechanisms and Robotics, Vol. 15, 2023.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2023</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Walter G. Bircher, Andrew S. Morgan, and Aaron M. Dollar</span><br>
+<a href="pubs/Bircher_FROBT2023.pdf" target="_blank">Robust Whole-hand Spatial Manipulation via Energy maps with Caging, Rolling, and Sliding,</a> Frontiers in Robotics and AI, 2023.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2023</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Vatsal V. Patel, Minas V. Liarokapis, and Aaron M. Dollar</span><br>
+<a href="pubs/Patel_RAM2023.pdf" target="_blank">Open Robot Hardware: Progress, Benefits, Challenges, and Best Practices,</a> IEEE Robotics and Automation Magazine, 2023.<br><br>
+	<span class="pub_categories">Education</span>
+	<span class="pub_categories">Benchmarking</span>
+	<span class="pub_categories">FabricationTechniques</span>
+	<span class="pub_year">2023</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Gaurav Singh and Aaron M. Dollar</span><br>
+<a href="https://ieeexplore.ieee.org/abstract/document/9754248" target="_blank">Finite Element Modeling of Internally Actuated Triangular Lattice and Its Variants for Modular Active Cell Robots (MACROs),</a> IEEE Robotics and Automation Letters, Vol. 7, No. 3, 2022.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2022</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Michael T. Leddy and Aaron M. Dollar</span><br>
+<a href="pubs/Leddy_TMRB2022.pdf" target="_blank">The Yale MyoAdapt Hand: A Highly Functional and Adaptive Single Actuator Prosthesis,</a> IEEE Transactions on Medical Robotics and Bionics, 2022.<br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_categories">BiologicalHands</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2022</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yuri Gloumakov, Joao Bimbo, and Aaron M. Dollar</span><br>
+<a href="pubs/Gloumakov_TNSRE2022.pdf" target="_blank">Trajectory Control - An Effective Strategy for Controlling Multi-DOF Upper Limb Prosthetic Devices,</a> IEEE Transactions on Neural Systems and Rehabilitation Engineering, 2022.<br><br>
+	<span class="pub_categories">VirtualReality</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2022</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joao Bimbo, Andrew S. Morgan, and Aaron M. Dollar</span><br>
+<a href="pubs/Bimbo_RAL2022.pdf" target="_blank">Force-based Simultaneous Mapping and Object Reconstruction for Robotic Manipulation,</a> IEEE Robotics and Automation Letters (with ICRA 2022 option), 2022.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_year">2022</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan*, Kaiyu Hang*, Bowen Wen, Kostas Bekris, and Aaron M. Dollar</span><br>
+<a href="pubs/Morgan_RAL2022.pdf" target="_blank">Complex In-Hand Manipulation via Compliance-Enabled Finger Gaiting and Multi-Modal Planning,</a> IEEE Robotics and Automation Letters (with ICRA 2022 option), 2022.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_year">2022</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kaiyu Hang, Walter G. Bircher, Andrew S. Morgan, and Aaron M. Dollar</span><br>
+<a href="https://robotics.sciencemag.org/content/6/54/eabe1321.full?ijkey=83yGDKNuVd6KA&keytype=ref&siteid=robotics" target="_blank">Manipulation for Self-Identification, and Self-Identification for Better Manipulation,</a> Science Robotics, vol. 5, No. 54, 2021. <b>Awarded in Editors' Top Picks of 2021</b> <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Walter G. Bircher, Andrew S. Morgan, and Aaron M. Dollar</span><br>
+<a href="http://robotics.sciencemag.org/cgi/content/full/6/54/eabd2666?ijkey=XbTEp40vjayGc&keytype=ref&siteid=robotics" target="_blank">Complex manipulation with a simple robotic hand through contact breaking and caging,</a> Science Robotics, vol. 5, No. 54, 2021. <b>Cover Article</b><br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Jillian Cochran, Linda Resnik, and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_TMRB2021.pdf" target="_blank">Quantifying Prosthetic and Intact Limb Use in Upper Limb Amputees via Egocentric Video: An Unsupervised, At-Home Study,</a> IEEE Transactions on Medical Robotics and Bionics, 2021. <br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Connor M. McCann*, Vatsal V. Patel*, and Aaron M. Dollar</span><br>
+<a href="pubs/McCann_RAM2021.pdf" target="_blank">The Stewart Hand: A Highly Dexterous 6-DOF Manipulator Based on the Stewart-Gough Platform,</a> IEEE Robotics and Automation Magazine, special issue on Emerging Paradigms for Robotic Manipulation: from the Lab to the Productive World, 2021. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan, Walter G. Bircher, and Aaron M. Dollar</span><br>
+<a href="pubs/Morgan_TRO2021.pdf" target="_blank">Towards Generalized Manipulation Learning through Grasp Mechanics-based Features and Self-Supervision,</a> IEEE Transactions on Robotics, 2021. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yuri Gloumakov, Adam J. Spiers, and Aaron M. Dollar</span><br>
+<a href="pubs/TNSRE_YG_part_1.pdf" target="_blank">Dimensionality Reduction and Motion Clustering during Activities of Daily Living: Three-, Four-, and Seven-Degree-of-Freedom Arm Movements,</a> IEEE Transactions on Neural Systems and Rehabilitation Engineering, 2020. <br><br>
+	<span class="pub_categories">Human Grasping and Manipulation</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yuri Gloumakov, Adam J. Spiers, and Aaron M. Dollar</span><br>
+<a href="pubs/TNSRE_YG_part_2.pdf" target="_blank">Dimensionality Reduction and Motion Clustering during Activities of Daily Living: Decoupling Hand Location and Orientation,</a> IEEE Transactions on Neural Systems and Rehabilitation Engineering, 2020. <br><br>
+	<span class="pub_categories">Human Grasping and Manipulation</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan*, Kaiyu Hang*, and Aaron M. Dollar</span><br>
+<a href="pubs/Morgan_RAL2020.pdf" target="_blank">Object-Agnostic Dexterous Manipulation of Partially Constrained Trajectories,</a> IEEE Robotics and Automation Letters (with IROS 2020 option), Vol. 5, No. 4, pp. 5494-5501, 2020.<br><br>
+  <span class="pub_categories">Manipulation</span>
+  <span class="pub_categories">Compliant</span>
+  <span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Thomas Feix, Ian M. Bullock, Yuri Gloumakov, and Aaron M. Dollar</span><br>
+<a href="pubs/Feix_TOH2020_v2.pdf" target="_blank">Effect of Number of Digits on Human Precision Manipulation Workspaces,</a> IEEE Transactions on Haptics, 2020.<br><br>
+	<span class="pub_categories">Haptics</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Michael T. Leddy and Aaron M. Dollar</span><br>
+<a href="pubs/Leddy_RAL2020.pdf" target="_blank">Examining the Frictional Behavior of Primitive Contact Geometries for Use as Robotic Finger Pads,</a>IEEE Robotics and Automation Letters (with ICRA 2020 option), 2020.<br><br>
+  <span class="pub_categories">BiologicalHands</span>
+  <span class="pub_categories">Prosthetics</span>
+  <span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kaiyu Hang*, Walter G. Bircher*, Andrew S. Morgan, and Aaron M. Dollar</span><br>
+<a href="pubs/Hang_IJRR2020.pdf" target="_blank">Hand-object configuration estimation using particle filters for dexterous in-hand manipulation,</a> The International Journal of Robotics Research, vol. 39(14), pp. 1760-1774, 2020.<br><br>
+  <span class="pub_categories">Manipulation</span>
+  <span class="pub_categories">Compliant</span>
+  <span class="pub_year">2020</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Minas V. Liarokapis and Aaron M. Dollar</span><br>
+<a href="pubs/Liarokapis_TASE2019.pdf" target="_blank">Combining Analytical Modeling and Learning to Simplify Dexterous Manipulation With Adaptive Robot Hands,</a> IEEE Transactions on Automation Science and Engineering, vol. 16(3), pp. 1361-1372, 2019.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Andrew S. Morgan, Krishnan Srinivasan, Berk Calli, and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_TOH2019.pdf" target="_blank">Using a Variable-Friction Robot Hand to Determine Proprioceptive Features for Object Classification during Within-Hand Manipulation,</a> IEEE Transactions on Haptics, vol. 13(3), pp. 600-610, 2019.<br><br>
+	<span class="pub_categories">Haptics</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan, Kaiyu Hang, Walter G. Bircher, Fadi M. Alladkani, Abhinav Gandhi, Berk Calli, and Aaron M. Dollar</span><br>
+<a href="pubs/Morgan_RAL2019.pdf" target="_blank">Benchmarking Cluttered Robot Pick-and-Place Manipulation with the Box and Blocks Test,</a> IEEE Robotics and Automation Letters, vol. 5(2), pp. 454-461, 2019.<br><br>
+  <span class="pub_categories">Manipulation</span>
+  <span class="pub_categories">Benchmarking</span>
+  <span class="pub_year">2019</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Kaiyu Hang, Ximin Lyu, Haoran Song, Johannes A. Stork, Aaron M. Dollar, Danica Kragic, and Fu Zhang</span><br>
+<a href="http://robotics.sciencemag.org/content/4/28/eaau6637" target="_blank">Perching and resting - A paradigm for UAV maneuvering with modularized landing gears,</a> Science Robotics, vol. 4(28), eaau6637, March 2019. <b>Cover Article</b><br><br>
+  <span class="pub_categories">Manipulation</span>
+  <span class="pub_categories">Aerial Manipulation</span>
+  <span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kaiyu Hang, Andrew S. Morgan, and Aaron M. Dollar</span><br>
+<a href="pubs/Hang_RAL2019.pdf" target="_blank">Pre-Grasp Sliding Manipulation of Thin Objects Using Soft, Compliant, or Underactuated Hands,</a> IEEE Robotics and Automation Letters (with ICRA 2019 option), vol. 4(2), pp. 662-669, 2019. <b>Best Paper Award in Robot Manipulation - Finalist</b><br><br>
+  <span class="pub_categories">Manipulation</span>
+  <span class="pub_categories">Compliant</span>
+  <span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma, Walter G. Bircher, and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_TRO2019.pdf" target="_blank">Modeling and Evaluation of Robust Whole-Hand Caging Manipulation,</a> IEEE Transactions on Robotics, vol. 35(3), pp. 549-563, 2019.<br><br>
+  <span class="pub_categories">Manipulation</span>
+  <span class="pub_categories">Caging</span>
+  <span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Diego Sustaita, Yuri Gloumakov, Leah R. Tsang, and Aaron M. Dollar</span><br>
+<a href="pubs/Sustaita_PEERJ2019.pdf" target="_blank">Behavioral correlates of semi-zygodactyly in Ospreys (Pandion haliaetus) based on analysis of internet images,</a> PeerJ, 7, p.e6243. (2019)<br><br>
+  <span class="pub_categories">Biological Hands</span>
+  <span class="pub_categories">Grasping</span>
+  <span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Avishai Sintov, Andrew S. Morgan, Andrew Kimmel, Aaron Dollar, Kostas Bekris, and Abdeslam Boularias</span><br>
+<a href="pubs/Sintov_RAL2019.pdf" target="_blank">Learning a State Transition Model of an Underactuated Adaptive Hand,</a> IEEE Robotics and Automation Letters (with ICRA 2019 option), vol. 4(2), pp. 1287-1294, 2019.<br><br>
+  <span class="pub_categories">Manipulation</span>
+  <span class="pub_categories">Compliant</span>
+  <span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Minas V. Liarokapis and Aaron M. Dollar</span><br>
+<a href="pubs/Liarokapis_TASE2018.pdf" target="_blank">Post-Contact, In-Hand Object Motion Compensation With Adaptive Hands,</a> IEEE Transactions on Automation Science and Engineering, vol. 15(2), pp. 456-467, 2018.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Neil Bajaj, Adam J. Spiers, and Aaron M. Dollar</span><br>
+<a href="pubs/Bajaj_TRO2019.pdf" target="_blank">State of the Art in Artificial Wrists: A Review of Prosthetic and Robotic Wrist Design,</a> IEEE Transactions on Robotics, vol. 35(1), pp. 261-277, 2019.<br><br>
+  <span class="pub_categories">Prosthetics</span>
+  <span class="pub_categories">Wrists</span>
+  <span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Berk Calli, and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_RAL2018.pdf" target="_blank">Variable-Friction Finger Surfaces to Enable Within-Hand Manipulation via Gripping and
+Sliding,</a> IEEE Robotics and Automation Letters,  vol. 3(4), pp. 4116-4123, 2018 (with IROS 2018 option).<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_TASE2018.pdf" target="_blank">Robust Precision Manipulation with Simple Process Models using Visual Servoing
+Techniques with Disturbance Rejection,</a> IEEE Transactions on Automation Science and Engineering, 2018.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_categories">Education</span>
+  <span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Spencer B. Backus and Aaron M. Dollar</span><br>
+<a href="pubs/Backus_JMR2017.pdf" target="_blank">A Prismatic-Revolute-Revolute Joint Hand for Grasping From Unmanned Aerial Vehicles and Other Minimally Constrained Vehicles,</a> ASME Journal of Mechanisms and Robotics, vol. 10(2), 025006, 2018.<br><br>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_categories">AerialManipulation</span>
+  <span class="pub_categories">UnderactuatedMechanisms</span>
+  <span class="pub_year">2018</span>
+</span>
+
+<!--
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_IJRR2017.pdf" target="_blank"> Modeling and Evaluation of Robust, Whole-hand Caging Manipulation,</a> IEEE Transactions on Robotics (in review).<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Thomas Feix, Ian M. Bullock, Yuri Gloumakov, and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_IJRR2017.pdf" target="_blank"> Effect of Number of Digits on Human Precision Manipulation Workspaces,</a> IEEE Transactions on
+Robotics, (in review)<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_categories">HumanGraspingandManipulation</span>
+  <span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Minas V. Liarokapis, Christoforos I. Mavrogiannis, Panagiotis Artemiadis, Aaron M. Dollar, and Kostas J. Kyriakopoulos</span><br>
+<a href="pubs/Calli_IJRR2017.pdf" target="_blank">Quantifying Anthropomorphism of Artificial Arms and Hands,</a> IEEE Transactions on Robotics (in review).<br><br>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_categories">HumanGraspingandManipulation</span>
+  <span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">John P. Swensen, Ravi Balasubramanian and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_IJRR2017.pdf" target="_blank">An Analysis of Degrees of Underactuation in Serial Mechanisms: Number of Degrees
+of Freedom and Actuators,</a> Advanced Robotics (in review).<br><br>
+  <span class="pub_categories">UnderactuatedMechanisms</span>
+  <span class="pub_year">2017</span>
+</span>
+
+-->
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_RAM2017.pdf" target="_blank" target="_blank">Yale OpenHand Project: Optimizing Open-Source Hand Designs for Ease of Fabrication and Adoption,</a> IEEE Robotics & Automation Magazine, vol. 24(1), pp. 32-40, 2017.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ahsan I. Nawroj, John P. Swensen, and Aaron M. Dollar</span><br>
+<a href="pubs/Nawroj_TRO2017.pdf" target="_blank" target="_blank">Toward Modular Active-Cell Robots (MACROs): SMA Cell Design and Modeling of
+Compliant, Articulated Meshes,</a> IEEE Transactions on Robotics, vol. 33(4), pp. 796-806, 2017.<br><br>
+  <span class="pub_categories">CellularRoboticsandMaterials</span>
+  <span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ahsan I. Nawroj and Aaron M. Dollar</span><br>
+<a href="pubs/Nawroj_RAL2017.pdf" target="_blank">Shape Control of Compliant, Articulated Meshes: Towards Modular Active-Cell Robots
+(MACROs),</a> IEEE Robotics and Automation Letters, (with IROS
+2017 option),  vol. 2(4), pp. 1878-1884, 2017.<br><br>
+  <span class="pub_categories">CellularRoboticsandMaterials</span>
+  <span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli, Arjun Singh, James Bruce, Aaron Walsman, Kurt Konolige, Siddhartha Srinivasa, Pieter Abbeel, and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_IJRR2017.pdf" target="_blank">Yale-CMU-Berkeley Dataset for Robotic Manipulation Research,</a> International Journal of Robotics Research, vol. 36(3), pp. 261-268, 2017.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_categories">RoboticGrasping</span>
+  <span class="pub_categories">Education</span>
+  <span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Oren Y. Kanner, Nicolas Rojas, Lael U. Odhner, and Aaron M. Dollar</span><br>
+<a href="pubs/Kanner_ACCESS2017.pdf" target="_blank">Adaptive Legged Robots Through Exactly Constrained and Non-Redundant Design,</a> IEEE Access, vol. 5, pp. 11131-11141, 2017<br><br>
+	<span class="pub_categories">LeggedRobots</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Zhe Xu, Connor M. McCann, and Aaron M. Dollar</span><br>
+<a href="pubs/Xu_JMR2017.pdf" target="_blank">Reconfigurable Modular Chain: A Reversible Material for Folding Three-Dimensional Lattice Structures,</a> ASME Journal of Mechanisms and Robotics, vol. 9(2), 025002, 2017.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Julia Borras-Sol and Aaron M. Dollar</span><br>
+<a href="pubs/Borras_IJRR2015.pdf" target="_blank">Dimensional Synthesis of a Three-fingered Dexterous Hand for Maximal Manipulation Workspace,</a>  The International Journal of Robotics Research, vol. 34(14), pp.1731-1746, 2015.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_TOH2017.pdf" target="_blank">Design and Evaluation of Shape-changing Shape Changing Navigation Interfaces for Pedestrian Navigation Assistance,</a> IEEE Transactions on Haptics, vol. 10(1), pp. 17-28, 2017.<br><br>
+	<span class="pub_categories">Haptics</span	>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Spencer B. Backus and Aaron M. Dollar</span><br>
+<a href="pubs/Backus_RAL2016.pdf" target="_blank">An adaptive three-fingered prismatic gripper with passive rotational joints,</a> IEEE Robotics and Automation Letters, vol. 1(2), pp. 668-675, 2016.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Minas V. Liarokapis, Berk Calli, and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_TOH2016.pdf" target="_blank">Single-Grasp Object Classification and Feature Extraction with Simple Robot Hands and Tactile Sensors,</a> IEEE Transactions on Haptics, vol. 9(2), pp.207-220, 2016.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Nicolas Rojas and Aaron M. Dollar</span><br>
+<a href="pubs/Rojas_JMR2016_1.pdf" target="_blank">The Coupler Surface of the RSRS Mechanism,</a> ASME Journal of Mechanisms and Robotics, vol. 8(1), 014505, 2016.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Nicolas Rojas and Aaron M. Dollar</span><br>
+<a href="pubs/Rojas_JMR2016_2.pdf" target="_blank">Classification and Kinematic Equivalents of Contact Types for Fingertip-Based Robot Hand Manipulation,</a> ASME Journal of Mechanisms and Robotics, vol. 8(4), 041014, 2016.<br><br>
+	<span class="pub_categories">Dexterous Manipulation</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma, Nicolas Rojas, and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_JMR2016.pdf" target="_blank">Spherical Hands: Toward Underactuated, In-Hand Manipulation Invariant to Object Size and Grasp Location,</a> ASME Journal of Mechanisms and Robotics, vol. 8(6), 061021, 2016.<br><br>
+	<span class="pub_categories">Dexterous Manipulation</span>
+	<span class="pub_categories">Parallel Manipulators</span>
+	<span class="pub_categories">Robotic Grasping</span>
+	<span class="pub_categories">Underactuated Mechanisms</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Nicolas Rojas,  Raymond R. Ma, and Aaron M. Dollar </span><br>
+<a href="pubs/Rojas_TRO2016_2.pdf" target="_blank">The GR2 Gripper: An Underactuated Hand for Open-Loop In-Hand Planar Manipulation</a> IEEE Transactions on Robotics, vol. 32(3), pp. 763-770, 2016.<br><br>
+	<span class="pub_categories">Dexterous Manipulation</span>
+	<span class="pub_categories">Robotic Grasping</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Nicolas Rojas and Aaron M. Dollar </span><br>
+<a href="pubs/Rojas_TRO2016_1.pdf" target="_blank">Gross Motion Analysis of Fingertip-Based Within-Hand Manipulation</a> IEEE Transactions on Robotics, vol. 32(4), pp. 1009-1016, 2016.<br><br>
+	<span class="pub_categories">Dexterous Manipulation</span>
+	<span class="pub_categories">Robotic Grasping</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Thomas Feix, Javier Romero, Heinz-Bodo Schmiedmayer, Aaron M. Dollar, and Danica Kragic</span><br>
+<a href="pubs/Feix_THMS2016.pdf" target="_blank">The GRASP Taxonomy of Human Grasp Types,</a> IEEE Transactions on Human-Machine Systems, vol. 46(1), pp.66-77, 2016<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Nicolas Rojas, Aaron M. Dollar, and Federico Thomas</span><br>
+<a href="pubs/Rojas_MMT2015.pdf" target="_blank">A Unified Position Analysis of the Dixon and the Generalized Peaucellier Linkages,</a> Mechanism and Machine Theory, vol. 94, pp. 28-40, 2015.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli, Aaron Walsman, Arjun Singh, Siddhartha Srinivasa, Pieter Abbeel, and Aaron M. Dollar </span><br>
+<a href="pubs/Calli_RAM2015.pdf" target="_blank">Benchmarking in Manipulation Research: The YCB Object and Model Set and Benchmarking Protocols,</a> IEEE Robotics and Automation Magazine, vol. 22(3), pp. 36-52, 2015. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">Benchmarking</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Massimo Cenciarini, Albert A. Adams, Karen N. Gregorczyk, Jeffrey M. Schiffman, and Aaron M. Dollar</span><br>
+<a href="pubs/Shamaei_TBME2015.pdf" target="_blank">Biomechanical Effects of Stiffness in Parallel with the Knee Joint during Walking,</a> IEEE Transactions on Biomedical Engineering, vol. 62(10), pp. 2389-2401, 2015. <br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Thomas Feix, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_TBME2015.pdf" target="_blank">Workspace Shape and Characteristics for Human Two- and Three-Fingered Precision Manipulation,</a> IEEE Transactions on Biomedical Engineering, vol. 62(9), pp. 2196-2207, 2015.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner and Aaron M. Dollar</span><br>
+<a href="pubs/Odhner_IJRR2015.pdf" target="_blank">Stable, Open-Loop Precision Manipulation with
+Underactuated Hands,</a> International Journal of Robotics Research, vol. 34(11), pp. 1347-1360, 2015.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">John P. Swensen, L.U. Odhner, Brandon Araki, and Aaron M. Dollar</span><br>
+<a href="pubs/Swensen_JMR2015.pdf" target="_blank">Printing 3D Electrical Traces in Additive Manufactured Parts via Low Melting Temperature Metals,</a> ASME Journal of Mechanisms and Robotics, vol. 7(2), 021004, 2015.<br><br>
+	<span class="pub_categories">FabricationTechniques</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Thomas Feix, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_IJRR2015.pdf" target="_blank">The Yale Human Grasping Data Set: Grasp, Object, and Task Data in Household and Machine Shop Environments,</a> International Journal of Robotics Research, vol. 34(3), pp. 251-255, 2015.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma, Joseph T. Belter, and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_JMR2015.pdf" target="_blank">Hybrid Deposition Manufacturing: Design Strategies for Multi-Material Mechanisms via 3D-Printing and Material Deposition,</a> ASME Journal of Mechanisms and Robotics, vol. 7(2), 021002, 2015.<br><br>
+	<span class="pub_categories">FabricationTechniques</span>
+	<span class="pub_year">2015</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Hari Vasudevan, Aaron M. Dollar, and John B. Morrell</span><br>
+<a href="pubs/Vasudevan_JMR2015.pdf" target="_blank">Design for Control of Wheeled Inverted Pendulum Platforms,</a> ASME Journal of Mechanisms and Robotics, vol. 7(4), 041005, 2015.<br><br>
+	<span class="pub_categories">MobileRobots</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Thomas Feix, Tracy L. Kivell, Emmanuelle Pouydebat, and Aaron M. Dollar</span><br>
+<a href="pubs/Feix_Interface2015.pdf" target="_blank">Estimating Thumb-Index Finger Precision Grip and Manipulation Potential in Extant and Fossil Primates,</a> Journal of the Royal Society Interface, vol. 12, 20150176, 2015.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">BiologicalHands</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter and Aaron M. Dollar</span><br>
+<a href="pubs/Belter_PONE2015.pdf" target="_blank">Strengthening of 3D Printed Fused Deposition Manufactured Parts using the Fill Composing Technique,</a> PLOS ONE, vol. 10(4): e0122915, 2015.<br><br>
+	<span class="pub_categories">FabricationTechniques</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Spencer B. Backus, Diego Sustaita, Lael U. Odhner and Aaron M. Dollar</span><br>
+<a href="pubs/Backus_RSOS2015.pdf" target="_blank">Mechanical Analysis of Avian Feet: Multiarticular Muscles in Grasping and Perching,</a> Royal Society Open Science, vol. 2(2), 140350, 2015.<br><br>
+	<span class="pub_categories">BiologicalHands</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Pauline E.I. Pounds and Aaron M. Dollar </span><br>
+<a href="pubs/Pounds_TRO2014.pdf" target="_blank">Stability of Helicopters in Compliant Contact under PD-PID Control</a> IEEE Transactions on Robotics, vol. 30(6), pp.
+1472-1486, 2014.<br><br>
+	<span class="pub_categories">AerialManipulation</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter and Aaron M. Dollar </span><br>
+<a href="pubs/Belter_TRO2015.pdf" target="_blank">A Passively Adaptive Rotary-to-Linear Continuously Variable Transmission,</a> IEEE Transactions on Robotics, vol. 30(5), pp. 1148-
+1160, 2014. <br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_categories">Robust Robotic Mechanisms</span>
+	<span class="pub_year">2014</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Thomas Feix, Ian M. Bullock, and Aaron M. Dollar</span><br>
+<a href="pubs/Feix_TOH2014_2.pdf" target="_blank">Analysis of Human Grasping Behavior: Correlating Tasks, Objects and Grasps,</a> IEEE Transactions on Haptics, vol. 7(4), pp. 430-441, 2014.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2014</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Thomas Feix, Ian M. Bullock, and Aaron M. Dollar</span><br>
+<a href="pubs/Feix_TOH2014_1.pdf" target="_blank">Analysis of Human Grasping Behavior: Object Characteristics and Grasp Type,</a> IEEE Transactions on Haptics,  vol. 7(3), pp. 311-323, 2014.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2014</span>
+</span>
+
+
+
+<span class="pub">
+<span class="pub_authors">John P. Swensen, Ahsan I. Nawroj, and Aaron M. Dollar</span><br>
+<a href="pubs/Swensen_SMS2014.pdf" target="_blank">Active Cells for Redundant and Configurable Articulated Structures,</a> Smart Materials and Structures, vol. 23(10), 104003, 2014.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2014</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner, Raymond R. Ma, and Aaron M. Dollar</span><br>
+<a href="pubs/Odhner_AR2014.pdf" target="_blank">Exploring Dexterous  Manipulation Workspaces with the iHY Hand,</a> Journal of the Robotics Society of Japan, special issue on Ingenious Mechanisms in Robotics, vol. 32(4) pp. 318-322, 2014.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Massimo Cenciarini, Albert A. Adams, Karen N. Gregorczyk, Jeffrey M. Schiffman, and Aaron M. Dollar</span><br>
+<a href="pubs/Shamaei_TBME2014.pdf" target="_blank">Design and Evaluation of a Quasi-Passive Knee Exoskeleton for Investigation of Motor Adaptation in Lower Extremity Joints,</a> IEEE Transactions on Biomedical Engineering, vol. 61(6), pp. 1809-1821, 2014. <br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Spencer B. Backus and Aaron M. Dollar</span><br>
+<a href="pubs/Backus_TMech2014.pdf" target="_blank">Robust Resonant Frequency-Based Contact Detection with Applications in Robotic Reaching and Grasping,</a> ASME/IEEE Transactions on Mechatronics, vol. 19(5), pp. 1552-1561, 2014.<br><br>
+	<span class="pub_categories">Sensors</span>
+	<span class="pub_categories">Robust Robotic Mechanisms</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner, Leif P. Jentoft, Mark R. Claffee, Nicholas Corson, Yaroslav Tenzer, Raymond R. Ma, Martin Buehler, Robert Kohout, Robert D. Howe, and Aaron M. Dollar</span><br>
+<a href="pubs/Odhner_IJRR2014.pdf" target="_blank">A Compliant, Underactuated Hand for Robust Manipulation,</a> International Journal of Robotics Research, vol. 33(5), pp. 736-752, 2014.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2014</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Julia Borras-Sol and Aaron M. Dollar</span><br>
+<a href="pubs/Borras_JMR2014.pdf" target="_blank">Actuation Torque Reduction in Parallel Robots using Joint Compliance,</a> ASME Journal of Mechanisms and Robotics, vol. 6(2), 021006, 2014.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Paul Napolitano, and Aaron M. Dollar</span><br>
+<a href="pubs/Shamaei_TNSRE2014.pdf" target="_blank">Design and Functional Evaluation of a Quasi-Passive Complaint Stance Control Knee-Ankle-Foot Orthosis,</a> IEEE Transactions on Neural Systems and Rehabilitation Engineering, vol. 22(2), pp. 258-268, 2014. <br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Julia Borras-Sol and Aaron M. Dollar</span><br>
+<a href="pubs/Borras_AURO2014.pdf" target="_blank">Analyzing Dexterous Hands using a Parallel Robots Framework,</a> Autonomous Robots, Special Issue on Modern Approaches for Dexterous Manipulation, Vol. 26 (1-2), pp. 169-180, 2014.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Leif Jentoft, Aaron M. Dollar, Christopher R. Wagner, and Robert D. Howe</span><br>
+<a href="pubs/Jentoft_Sensors2014.pdf" target="_blank">Intrinsic Embedded Sensors for Polymeric Mechatronics: Flexure and Force Sensing,</a> Sensors, Special Issue on Tactile Sensing, vol. 14(3), pp. 3861-3870, 2014.<br><br>
+	<span class="pub_categories">Sensors</span>
+	<span class="pub_year">2014</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar</span><br>
+<a href="pubs/Dollar_STAR14.pdf" target="_blank">Classifying Human Hand Use and the Activities of Daily Living,</a> The Human Hand as an Inspiration for Robot Hand Development, Springer International Publishing, pp. 201-216, 2014.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2014</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_JMR2014.pdf" target="_blank">Linkage-Based Analysis and Optimization of an Underactuated Planar Manipulator for In-Hand Manipulation,</a> ASME Journal of Mechanisms and Robotics, vol. 6(1), 011002, 2014.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ahsan I. Nawroj, John P. Swensen, and Aaron M. Dollar</span><br>
+<a href="pubs/Nawroj_PONE2013.pdf" target="_blank">Electrically Conductive Bulk Composites through a Contact-Connected Aggregate,</a> PLOS ONE, vol. 8(12), e82260, 2013.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Gregory S. Sawicki, and Aaron M. Dollar</span><br>
+<a href="pubs/Shamaei_PONE2013_3.pdf" target="_blank">Estimation of Quasi-Stiffness of the Human Hip in the Stance Phase of Walking,</a> PLOS ONE 8(12): e81841, 2013. <br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Joshua Z. Zheng, Sara De La Rosa, Charlotte Guertler, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_TOH2013_2.pdf" target="_blank">Grasp Frequency and Usage in Daily Household and Machine Shop Tasks,</a> IEEE Transactions on Haptics,  vol. 6(3), pp. 296-308, 2013.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2013</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Oren Y. Kanner and Aaron M. Dollar</span><br>
+<a href="pubs/Kanner_JMR2013.pdf" target="_blank">Kinematic Design of an Underactuated Robot Leg for Passive Terrain Adaptability and Stability,</a> ASME Journal of Mechanisms and Robotics, vol. 5, Aug. 2013, 031006, 2013.<br><br>
+	<span class="pub_categories">LeggedRobots</span>
+	<span class="pub_year">2013</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner, Raymond R. Ma, and Aaron M. Dollar</span><br>
+<a href="pubs/Odhner_TASE2013.pdf" target="_blank">Open-Loop Precision Grasping with Underactuated Hands Inspired by a Human Manipulation Strategy,</a> IEEE Transactions on Automation Science and Engineering, vol. 10(3), pp. 625-633, 2013.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Raymond R. Ma, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_TOH2013_1.pdf" target="_blank">A Hand-Centric Classification of Human and Robot Dexterous Manipulation,</a> IEEE Transactions on Haptics, vol. 6(2), pp. 129-144, 2013.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter, J. Segil, Aaron M. Dollar, and R.F. Weir</span><br>
+<a href="pubs/Belter_JRRD2013.pdf" target="_blank">The Mechanical Design and Performance Specifications of Anthropomorphic Prosthetic Hands: A Review,</a> Journal of Rehabilitation Research and Development, vol. 50(5), pp.599-618, 2013.
+<br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Gregory S. Sawicki, and Aaron M. Dollar</span><br>
+<a href="pubs/Shamaei_PONE2013_2.pdf" target="_blank">Estimation of Quasi-Stiffness and Propulsive Work of the Human Ankle in the Stance Phase of Walking,</a> PLOS ONE 8(3): e59935, 2013. <br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Gregory S. Sawicki, and Aaron M. Dollar</span><br>
+<a href="pubs/Shamaei_PONE2013_1.pdf" target="_blank">Estimation of Quasi-Stiffness of the Human Knee in the Stance Phase of Walking,</a> PLOS ONE 8(3): e59993, 2013.<br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">John P. Swensen and Aaron M. Dollar</span><br>
+<a href="pubs/Swensen_PONE2012.pdf" target="_blank">The Connectedness of Packed Circles and Spheres with
+Application to Conductive Cellular Materials,</a> PLOS ONE, vol. 7(12), e51695, 2012.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner and Aaron M. Dollar </span><br>
+<a href="pubs/Odhner_TRO2012.pdf" target="_blank">The Smooth Curvature Model: An Efficient Representation of Euler-Bernoulli Flexures as Robot Joints,</a> IEEE Transactions on Robotics, vol. 28(4), pp. 761-772, 2012.<br><br>
+	<span class="pub_categories">ModelingofFlexuralJoints</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ravi Balasubramanian, Joseph T. Belter, and Aaron M. Dollar </span><br>
+<a href="pubs/Balasubramanian_JMR2012.pdf" target="_blank">Disturbance Response of Two-link Underactuated Serial-link Chains,</a> ASME Journal of Mechanisms and Robotics, vol. 4(2), 021013, 2012. <br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Pauline E.I. Pounds, Daniel R. Bersak, and Aaron M. Dollar </span><br>
+<a href="pubs/Pounds_AURO2012.pdf" target="_blank">Stability of small-scale UAV helicopters and quadrotors with added payload mass under PID control,</a> Autonomous Robots, vol. 33(1-2), pp.129-142, 2012.<br><br>
+	<span class="pub_categories">AerialManipulation</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe</span><br>
+<a href="pubs/Dollar_IJRR2011.pdf" target="_blank">Joint Coupling Design of Underactuated Hands for Unstructured Environments,</a> International Journal of Robotics Research, vol. 30, pp. 1157-1169, 2011.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe</span><br>
+<a href="pubs/Dollar_IJRR2010.pdf" target="_blank">The Highly Adaptive SDM Hand: Design and Performance Evaluation,</a> International Journal of Robotics Research, vol. 29(5), pp. 585-597, 2010.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2010</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar, Leif Jentoft, Jason H. Gao, and Robert D. Howe</span><br>
+<a href="pubs/Dollar_AURO2010.pdf" target="_blank">Contact Sensing and Grasping Performance of Compliant Hands,</a> Autonomous Robots, vol. 28(1), pp. 65-75, 2010.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">Sensors</span>
+	<span class="pub_year">2010</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Hugh Herr </span><br>
+<a href="pubs/dollar_TRO_Exos.pdf" target="_blank">Lower Extremity Exoskeletons and Active Orthoses: Challenges and State of the Art,</a> IEEE Transactions on Robotics, vol. 4(1) pp.144-158, 2008.<br><br>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_year">2008</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe</span><br>
+<a href="pubs/Dollar_mechatronics.pdf" target="_blank">A Robust Compliant Grasper via Shape Deposition Manufacturing,</a> IEEE/ASME Transactions on Mechatronics, vol. 11(2), pp.154-161, 2006.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2006</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe</span><br>
+<a href="pubs/DollarAR2005.pdf" target="_blank">Towards Grasping in Unstructured Environments: Grasper Compliance and Configuration Optimization,</a> Advanced Robotics, vol. 19(5), pp. 523-543, 2005.
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2005</span>
+</span>
+
+
+</td></tr>
+
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+
+<tr><td class="title">Refereed Conference Papers</td></tr>
+
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+
+<!--on Aaron's CV . . .
+
+-->
+
+<tr><td class="bibliography">
+
+<span class="pub">
+	<span class="pub_authors">Podshara Chanrungmaneekul, Yiting Chen, Joshua T. Grace, Aaron M. Dollar, and Kaiyu Hang</span><br>
+	<a href="https://ieeexplore.ieee.org/abstract/document/11247782" target="_blank">ARC-Calib: Autonomous Markerless Camera-to-Robot Calibration via Exploratory Robot Motions,</a> proceedings of the 2025 IEEE International Conference on Intelligent Robots and Systems (IROS), 2025. <br><br>
+		<span class="pub_categories">DexterousManipulation</span>
+		<span class="pub_year">2025</span>
+	</span>
+
+<span class="pub">
+	<span class="pub_authors">Joshua T. Grace, Podshara Chanrungmaneekul, Kaiyu Hang, and Aaron M. Dollar</span><br>
+	<a href="pubs/Grace_IROS2025.pdf" target="_blank">On the Role of Jacobians in Robust Manipulation,</a> proceedings of the 2025 IEEE International Conference on Intelligent Robots and Systems (IROS), 2025. <br><br>
+		<span class="pub_categories">DexterousManipulation</span>
+		<span class="pub_year">2025</span>
+	</span>
+
+
+<span class="pub">
+	<span class="pub_authors">Yinkai Dong*, Jehyeok Kim*, Vatsal V. Patel, Huijuan Feng, and Aaron M. Dollar</span><br>
+	<a href="pubs/Dong_ICRA2025.pdf" target="_blank">Model Q-II: An Underactuated Hand with Enhanced Grasping Modes and Primitives for Dexterous Manipulation,</a> proceedings of the 2025 IEEE International Conference on Robotics and Automation (ICRA), 2025.<br><br>
+		<span class="pub_categories">DexterousManipulation</span>
+		<span class="pub_categories">RoboticGrasping</span>
+		<span class="pub_year">2025</span>
+	</span>
+
+<span class="pub">
+	<span class="pub_authors">Podshara Chanrungmaneekul, Kejia Ren, Joshua T. Grace, Aaron M. Dollar, and Kaiyu Hang</span><br>
+	<a href="https://ieeexplore.ieee.org/abstract/document/10802330" target="_blank">Interactive Robot-Environment Self-Calibration via Compliant Exploratory Actions,</a> proceedings of the 2024 IEEE International Conference on Intelligent Robots and Systems (IROS), 2024. <br><br>
+		<span class="pub_categories">DexterousManipulation</span>
+		<span class="pub_year">2024</span>
+	</span>
+	
+<span class="pub">
+<span class="pub_authors">Connor Pan, Vatsal V. Patel, Jonathan Gewirtzman, Ian Richardson, Ravish Dubey, Kelly Caylor, Aaron M. Dollar, and Elizabeth Forbes</span><br>
+<a href="https://dl.acm.org/doi/abs/10.1145/3674829.3675063" target="_blank">Fluxbot: The Next Generation - Design and Validation of a Wireless, Open-Source Mechatronic CO2 Flux Sensing Chamber,</a> proceedings of the 7th ACM SIGCAS/SIGCHI Conference on Computing and Sustainable Societies (COMPASS), 2024. <br><br>
+	<span class="pub_year">2024</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Joshua T. Grace, Podshara Chanrungmaneekul, Kaiyu Hang, and Aaron M. Dollar</span><br>
+<a href="pubs/Grace_ICRA2024.pdf" target="_blank">Direct Self-Identification of Inverse Jacobians for Dexterous Manipulation Through Particle Filtering,</a> proceedings of the 2024 IEEE International Conference on Robotics and Automation (ICRA), 2024.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2024</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam Seewald, Cameron J. Lerch, Marvin Chancan, Aaron M. Dollar, and Ian Abraham</span><br>
+<a href="pubs/Seewald_ICRA2024_2.pdf" target="_blank">Energy-aware Ergodic Search: Continuous Exploration for Multi-agent Systems with Battery Constraints,</a> proceedings of the 2024 IEEE International Conference on Robotics and Automation (ICRA), 2024.<br><br>
+	<span class="pub_categories">MobileRobots</span>
+	<span class="pub_year">2024</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam Seewald, Marvin Chancan, Connor M. McCann, Seonghoon Noh, Omeed Fallahi, Hector Castillo, Ian Abraham, and Aaron M. Dollar</span><br>
+<a href="pubs/Seewald_ICRA2024_1.pdf" target="_blank">RB5 Low-cost Explorer: Implementing Autonomous Long-term Exploration on Low-cost Robotic Hardware,</a> proceedings of the 2024 IEEE International Conference on Robotics and Automation (ICRA), 2024.<br><br>
+	<span class="pub_categories">MobileRobots</span>
+	<span class="pub_year">2024</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam Norton, Holly Yanco, Berk Calli, and Aaron M. Dollar</span><br>
+<a href="https://dl.acm.org/doi/abs/10.1145/3568294.3579963" target="_blank">Advancing Human-Robot Interaction Research and Benchmarking Through Open-Source Ecosystems,</a> proceedings of the 2023 IEEE International Conference on Human-Robot Interaction (HRI), 2023.<br><br>
+  <span class="pub_categories">Benchmarking</span>
+  <span class="pub_year">2023</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Podshara Chanrungmaneekul, Kejia Ren, Joshua T. Grace, Aaron M. Dollar, and Kaiyu Hang</span><br>
+<a href="pubs/Grace_IROS2023.pdf" target="_blank">Non-Parametric Self-Identification and Model Predictive Control of Dexterous In-Hand Manipulation,</a> proceedings of the 2023 IEEE International Conference on Intelligent Robots and Systems (IROS), 2023.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_year">2023</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan, Quentin Bateux, Mei Hao, and Aaron M. Dollar</span><br>
+<a href="pubs/Morgan_ICRA2023.pdf" target="_blank">Towards Generalized Robot Assembly through Compliance-Enabled Contact Formations,</a> proceedings of the 2023 IEEE International Conference on Robotics and Automation (ICRA), 2023.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2023</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Vatsal V. Patel, Daniel Rakita, and Aaron M. Dollar</span><br>
+<a href="pubs/Patel_ICRA2023.pdf" target="_blank">An Analysis of Unified Manipulation with Robot Arms and Dexterous Hands via Optimization-based Motion Synthesis,</a> proceedings of the 2023 IEEE International Conference on Robotics and Automation (ICRA), 2023.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_year">2023</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Weiyao Wang, Andrew S. Morgan, Aaron M. Dollar, and Gregory D. Hager</span><br>
+<a href="pubs/Wang_CASE2022.pdf" target="_blank">Dynamical Scene Representation and Control with
+Keypoint-Conditioned Neural Radiance Field,</a> proceedings of the 2022 IEEE International Conference on Automation Science and Engineering (CASE), 2022.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_year">2022</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Jonathan Koss, Anthony Jiang, Patrick W. Sweeney, Nelson Rios, and Aaron M. Dollar</span><br>
+<a href="https://www.proquest.com/docview/2569201007?pq-origsite=gscholar&fromopenview=true&sourcetype=Scholarly%20Journals" target="_blank">Robust Machine Learning Classification of Unlabeled Biological Data: A case study with herbaria sheets</b> Biodiversity Information Science and Standards, 2021.<br><br>
+	<span class="pub_categories">DeepLearning</span>
+	<span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Vatsal V. Patel, and Aaron M. Dollar</span><br>
+<a href="pubs/Patel_IROS2021.pdf" target="_blank">Robot Hand based on a Spherical Parallel Mechanism for Within-Hand Rotations about a Fixed Point,</a> proceedings of the 2021 IEEE International Conference on Intelligent Robots and Systems (IROS), 2021.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan*, Bowen Wen*, Junchi Liang, Abdeslam Boularias, Aaron M. Dollar, and Kostas Bekris</span><br>
+<a href="pubs/Morgan_RSS2021.pdf" target="_blank">Vision-driven Compliant Manipulation for Reliable, High-Precision Assembly Tasks,</a> proceedings of Robotics: Science and Systems, 2021.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan*, Daljeet Nandha*, Georgia Chalvatzaki, Carlo D'Eramo, Aaron M. Dollar, and Jan Peters</span><br>
+<a href="pubs/Morgan_ICRA2021.pdf" target="_blank">Model Predictive Actor-Critic: Accelerating Robot Skill Acquisition with Deep Reinforcement Learning,</a> proceedings of the 2021 IEEE International Conference on Robotics and Automation (ICRA), 2021.<br><br>
+  <span class="pub_categories">DexterousManipulation</span>
+  <span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Neil M. Bajaj and Aaron M. Dollar</span><br>
+<a href="https://conferences.lib.unb.ca/mec/en/article/view/79" target="_blank">Realistic Design Considerations of a 3-DOF Prosthetic Wrist Device,</a> proceedings of the 2020 UNB Myoelectric Controls Symposium, 2020.<br><br>
+	<span class="pub_categories">Wrist</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Neil M. Bajaj and Aaron M. Dollar</span><br>
+<a href="pubs/Bajaj_IDETC2020.pdf" target="_blank">Design of a Large Workspace Passive Spherical Joint Via Contact Edge Design,</a> proceedings of the ASME 2020 International Design Engineering Technical Conferences (IDETC), 2020.<br><br>
+	<span class="pub_categories">Wrist</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Vatsal V. Patel, Andrew S. Morgan, and Aaron M. Dollar</span><br>
+<a href="pubs/Patel_IROS2020.pdf" target="_blank">Highly Underactuated Radial Gripper for Automated Planar Grasping and Part Fixturing,</a> proceedings of the 2020 IEEE International Conference on Intelligent Robots and Systems (IROS), 2020.<br><br>
+  <span class="pub_categories">Hand</span>
+  <span class="pub_categories">Grasping</span>
+	<span class="pub_categories">Caging</span>
+  <span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Seonghoon Noh, and Aaron M. Dollar</span><br>
+<a href="pubs/Noh_ICRA2020.pdf" target="_blank">Pinbot: A Walking Robot with Locking Pin Arrays for Passive Adaptability to Rough Terrains,</a> proceedings of the 2020 IEEE International Conference on Robotics and Automation (ICRA), 2020.<br><br>
+	<span class="pub_categories">LeggedRobots</span>
+	<span class="pub_categories">MobileRobots</span>
+  <span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yuri Gloumakov, Joao Bimbo, and Aaron M. Dollar</span><br>
+<a href="pubs/biorob_YG_2020.pdf" target="_blank">Trajectory Control for 3 Degree of Freedom Wrist Prosthesis in Virtual Reality: A Pilot Study,</a>IEEE proceedings of the International Conference for Biomedical Robotics and Biomechatronics (BioRob), 2020.<br><br>
+  <span class="pub_categories">VirtualReality</span>
+  <span class="pub_categories">Prosthetics</span>
+  <span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Jimin Hong and Aaron M. Dollar</span><br>
+<a href="pubs/Hong_EMBC2020.pdf" target="_blank">Towards Understanding Complex Human Dexterous Manipulation Strategies: Kinematics of Gaiting-based Object Rotations,</a> proceedings of the 42nd Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC), 2020.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Seonghoon Noh and Aaron M. Dollar</span><br>
+<a href="pubs/Noh_IDETC2019.pdf" target="_blank">Design of an Underactuated Legged Robot with Prismatic Legs for Passive Adaptability to Terrain, </a>proceedings of the ASME 2019 International Design Engineering Technical Conferences (IDETC), Computers and Information in Engineering Conference (CIE), 2019.<br><br>
+	<span class="pub_categories">LeggedRobots</span>
+	<span class="pub_categories">MobileRobots</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan, Kaiyu Hang, Walter G. Bircher, and Aaron M. Dollar</span><br>
+<a href="pubs/Morgan_IROS2019.pdf" target="_blank">A Data-Driven Framework for Learning Dexterous Manipulation of Unknown Objects, </a>proceedings of the 2019 IEEE International Conference on Intelligent Robots and Systems (IROS), 2019.<br><br>
+	<span class="pub_categories">Manipulation</span>
+	<span class="pub_categories">Learning</span>
+	<span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Walter G. Bircher, Andrew S. Morgan, Kaiyu Hang, and Aaron M. Dollar</span><br>
+<a href="pubs/Bircher_ICRA2019_1.pdf" target="_blank">Energy Gradient-Based Graphs for Planning
+Within-Hand Caging Manipulation, </a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2019.<br><br>
+	<span class="pub_categories">Manipulation</span>
+	<span class="pub_categories">Caging</span>
+	<span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Walter G. Bircher and Aaron M. Dollar</span><br>
+<a href="pubs/Bircher_ICRA2019_2.pdf" target="_blank">Design Principles and Optimization of a
+Planar Underactuated Hand for Caging Grasps, </a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2019.<br><br>
+	<span class="pub_categories">Grasping</span>
+	<span class="pub_categories">Caging</span>
+	<span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Michael T. Leddy and Aaron M. Dollar</span><br>
+<a href="pubs/Leddy_ICRA2019.pdf" target="_blank">Stability  Optimization  of Two-Fingered Anthropomorphic  Hands for Precision  Grasping  with  a Single Actuator,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2019.<br><br>
+	<span class="pub_categories">Grasping</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yuri Gloumakov, Adam J. Spiers, and Aaron M. Dollar</span><br>
+<a href="pubs/Gloumakov_ICRA2019.pdf" target="_blank">A Clustering Approach to Categorizing 7 Degree-of-Freedom Arm Motions during Activities of Daily Living,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2019.<br><br>
+	<span class="pub_categories">Grasping</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan, Walter G. Bircher, Berk Calli, and Aaron M. Dollar</span><br>
+<a href="pubs/Morgan_ICRA2019.pdf" target="_blank">Learning from Transferable Mechanics Models: Generalizable
+Online Mode Detection in Underactuated Dexterous Manipulation,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2019.<br><br>
+	<span class="pub_categories">Manipulation</span>
+	<span class="pub_categories">Learning</span>
+	<span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Michael T. Leddy and Aaron M. Dollar</span><br>
+<a href="pubs/Leddy_BIOROB2018.pdf" target="_blank">Preliminary Design and Evaluation of a Single-Actuator Anthropomorphic Prosthetic Hand with Multiple Distinct Grasp Types, </a> proceedings of the International Conference on Biomedical Robotics and Biomechatronics (BioRob), 2018.<br><br>
+	<span class="pub_categories">Hand</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli, Andrew Kimmel, Kaiyu Hang, Kostas Bekris, and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_ISER2018.pdf" target="_blank">Path Planning for Within-Hand Manipulation
+over Learned Representations of Safe States,</a>  International Symposium on Experimental Robotics (ISER), Buenos Aires, Argentina, 2018<br><br>
+  <span class="pub_categories">Manipulation</span>
+  <span class="pub_categories">Compliant</span>
+  <span class="pub_year">2019</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Connor M. McCann and Aaron M. Dollar</span><br>
+<a href="pubs/McCann_IDETC2018.pdf" target="_blank">Analysis and Dimensional Synthesis of a Robotic Hand based on the Stewart-Gough Platform</a>, proceedings of the 2018 ASME IDETC Mechanisms and Robotics Conference, 2018.<br><br>
+	<span class="pub_categories">Hand</span>
+	<span class="pub_categories">Manipulation</span>
+	<span class="pub_categories">Design</span>
+	<span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Neil Bajaj and Aaron M. Dollar</span><br>
+<a href="pubs/Bajaj_BIOROB2018.pdf" target="_blank">Design and Preliminary Evaluation of a 3-DOF Powered Prosthetic Wrist Device,</a> proceedings of the International Conference on Biomedical Robotics and Biomechatronics (BioRob), 2018.<br><br>
+	<span class="pub_categories">Wrist</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Yuri Gloumakov, and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_BIOROB2018.pdf" target="_blank">Examining the Impact of Wrist Mobility on Reaching Motion Compensation across a Discretely Sampled Workspace</a>, proceedings of the International Conference on Biomedical Robotics and Biomechatronics (BioRob), 2018.<br><br>
+	<span class="pub_categories">Amputees</span>
+	<span class="pub_categories">Wrist</span>
+	<span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Jillian Cochran, Adam J. Spiers, and Aaron M. Dollar</span><br>
+<a href="pubs/Cochran_BIOROB2018.pdf" target="_blank">Analyzing At-Home Exfordance Use by Unilateral Upper-Limb Amputees</a>, proceedings of the International Conference on Biomedical Robotics and Biomechatronics (BioRob), 2018.<br><br>
+	<span class="pub_categories">Amputees</span>
+	<span class="pub_categories">Exfordance</span>
+	<span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli, Krishnan Srinivasan, Andrew S. Morgan and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_ICRA2018.pdf" target="_blank">Learning Modes of Within-hand Manipulation,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2018. <b>Best Paper Award in Robot Manipulation - Finalist</b><br><br>
+	<span class="pub_categories">Machine Learning</span>
+	<span class="pub_categories">Manipulation</span>
+	<span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Neil Bajaj and Aaron M. Dollar</span><br>
+<a href="pubs/Bajaj_ICRA2018.pdf" target="_blank">Kinematic Optimization of a Novel Partially Decoupled Three Degree of Freedom
+Hybrid Wrist Mechanism,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2018.<br><br>
+	<span class="pub_categories">Wrist</span>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2018</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Connor M. McCann and Aaron M. Dollar</span><br>
+<a href="pubs/McCann_IROS2017.pdf" target="_blank">Design of a Stewart Platform-Inspired Dexterous Hand for 6-DOF Within-Hand
+Manipulation,</a> proceedings of the 2017 IEEE International Conference on Intelligent Robots and Systems (IROS), 2017. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2017</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Minas V. Liarokapis and Aaron M. Dollar</span><br>
+<a href="pubs/Liarokapis_IROS2017_2.pdf" target="_blank"> Deriving Dexterous, In-Hand Manipulation Primitives for Adaptive Robot Hands,</a> proceedings of the 2017 IEEE International Conference on Intelligent Robots and Systems (IROS), 2017. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2017</span>
+</span>
+
+
+
+<span class="pub">
+<span class="pub_authors">Ahsan I. Nawroj and Aaron M. Dollar</span><br>
+<a href="pubs/Nawroj_IROS2017.pdf" target="_blank"> Evaluation of Regular Planar Meshes for Modular Active Cell Robots (MACROs),</a> proceedings of the 2017 IEEE International
+Conference on Intelligent Robots and Systems (IROS), 2017. <br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Minas V. Liarokapis and Aaron M. Dollar</span><br>
+<a href="pubs/Liarokapis_IROS2017.pdf" target="_blank"> Learning the Post-Contact Reconfiguration of the Hand Object System for Adaptive
+Grasping Mechanisms,</a> proceedings of the 2017 IEEE International Conference on Intelligent Robots and Systems (IROS), 2017.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Spencer B. Backus and Aaron M. Dollar</span><br>
+<a href="pubs/Backus_IDETC2017.pdf" target="_blank">Design Optimization of a Prismatic-Revolute-Revolute Joint Hand for Grasping from
+Unconstrained Vehicles,</a>  proceedings of the 2017 ASME IDETC Mechanisms and Robotics Conference, 2017.<br><br>
+	<span class="pub_categories">AerialManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Jillian Cochran, Jimin Hong, and Aaron M. Dollar</span><br>
+<a href="pubs/Cochran_IDETC2017.pdf" target="_blank">Fusion Clutch: A Bi-Stable Latching Mechanism for Human-Safe Robots,</a> proceedings of the 2017 ASME IDETC
+Mechanisms and Robotics Conference, 2017.<br><br>
+	<span class="pub_categories">Human-SafeRobots</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Nicolas Rojas and Aaron M. Dollar</span><br>
+<a href="pubs/Rojas_ICORR2017.pdf" target="_blank">Distance-Based Kinematics of the Five-Oblique-Axis Thumb Model with Intersecting
+Axes at the Metacarpophalangeal Joint,</a> proceedings of the 2017 IEEE International Conference
+on Rehabilitation Robotics (ICORR), 2017.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, L. Resnick, and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_ICORR2017.pdf" target="_blank">Analyzing At-Home Prosthesis Use in Unilateral Upper-Limb Amputees to Inform
+Treatment & Device Design,</a> proceedings of the 2017 IEEE International
+Conference on Rehabilitation Robotics (ICORR), 2017.<br><br>
+	<span class="pub_categories">Prosthetics</span>
+    <span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Walter G. Bircher, Aaron M. Dollar, and Nicolas Rojas</span><br>
+<a href="pubs/Bircher_ICRA2017.pdf" target="_blank">A Two-Fingered Robot Gripper with Large Object Reorientation Range,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2017. <b>Best Paper Award in Robot Manipulation - Finalist</b><br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_ICRA2017.pdf" target="_blank">Vision-Based Model Predictive Control for Within-Hand Precision Manipulation with Underactuated Grippers,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2017.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma, Walter G. Bircher, and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_ICRA2017.pdf" target="_blank">Toward Robust, Whole-hand Caging Manipulation with Underactuated Hands,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2017.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_IDETC2016.pdf" target="_blank">In-Hand Manipulation Primitives for a Minimal, Underactuated Gripper with Active Surfaces,</a> proceedings of the ASME 2016 International Design Engineering Technical Conferences (IDETC), Computers and Information in Engineering Conference (CIE), 2016.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yuri Gloumakov, Thomas Feix, Ian M. Bullock, and Aaron M. Dollar</span><br>
+<a href="pubs/Gloumakov_HAPTICS2016.pdf" target="_blank">Object Stability during Human Precision Fingertip Manipulation</a>, proceedings of the Haptics Symposium, 2016.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli and Aaron M. Dollar</span><br>
+<a href="pubs/Calli_IROS2016.pdf" target="_blank">Vision-based Precision Manipulation with Underactuated Hands: Simple and Effective Solutions for Dexterity,</a> proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2016.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Zhe Xu, Connor M. McCann, and Aaron M. Dollar</span><br>
+<a href="pubs/Xu_IDETC2016.pdf" target="_blank">Design of a Reconfigurable Modular Chain for Folding 3D Lattice Structures,</a> proceedings of the ASME 2016 International Design Engineering Technical Conferences (IDETC), Mechanisms and Robotics Conference, 2016.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter, Michael T. Leddy, Kevin D. Gemmell, and Aaron M. Dollar</span><br>
+<a href="pubs/Belter_BIOROB2016.pdf" target="_blank">Comparative Clinical Evaluation of the Yale Multigrasp Hand,</a> proceedings of the 6th Annual IEEE RAS/EMBS International Conference on Biomedical Robotics and Biomechatronics (BioRob), 2016. <b>Best Student Paper - Finalist</b><br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kevin D. Gemmell, Michael T. Leddy, Joseph T. Belter, and Aaron M. Dollar</span><br>
+<a href="pubs/Gemmell_EMBC2016.pdf" target="_blank">Investigation of a Passive Capstan Based Grasp Enhancement Feature in a Voluntary-Closing Prosthetic Terminal Device,</a> proceedings of the 38th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC), Orlando, FL, 2016<br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_ICRA2016.pdf" target="_blank">Outdoor Pedestrian Navigation Assistance with a Shape-Changing Haptic Interface and Comparison with a Vibrotactile Device,</a> proceedings of the Haptics Symposium, 2016.<br><br>
+	<span class="pub_categories">Haptics</span	>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_ICRA2016.pdf" target="_blank"> A Two-fingered Underactuated Anthropomorphic Manipulator Based on Human Precision Manipulation Motions,</a> proceedings of the IEEE International Conference on Robotics and Automation (ICRA), 2016<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Janet van Der Linden, Maria Oshodi, and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_HAPTICS2016.pdf" target="_blank">Development and experimental validation of a minimalistic shape-changing haptic navigation device,</a> proceedings of IEEE International Conference on Robotics and Automation (ICRA), 2016.<br><br>
+	<span class="pub_categories">Haptics</span	>
+	<span class="pub_year">2016</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Janet van Der Linden, Maria Oshodi, Sarah Wiseman, and Aaron M. Dollar</span><br>
+<a href="pubs/Spiers_WHC2015.pdf" target="_blank">Flatland: An Immersive Theatre Experience Centered on Shape Changing Haptic Navigation Technology,</a> proceedings of the IEEE World Haptics Conference, 2015.<br><br>
+	<span class="pub_categories">Haptics</span	>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ahsan I. Nawroj, John P. Swensen, and Aaron M. Dollar</span><br>
+<a href="pubs/Nawroj_IROS2015.pdf" target="_blank">Design of Mesoscale Active Cells for Networked, Compliant Robotic Structures,</a> proceedings of the 2015 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2015.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Minas V. Liarokapis, Berk Calli, Adam J. Spiers, and Aaron M. Dollar</span><br>
+<a href="pubs/Liarokapis_IROS2015.pdf" target="_blank">Unplanned, Model-Free, Single Grasp Object Classification with Underactuated Hands and Force Sensors,</a> proceedings of the 2015 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2015.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">Sensors</span>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Thomas Feix, Ian M. Bullock, Yuri Gloumakov, and Aaron M. Dollar</span><br>
+<a href="pubs/Feix_EMBC2015.pdf" target="_blank">Rotational Ranges of Human Precision Manipulation When Grasping Objects With Two to Five Digits,</a> proceedings of the 2015 International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC 2015), Milan, Italy, 2015.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Michael T. Leddy, Joseph T. Belter, Kevin D. Gemmell, and Aaron M. Dollar</span><br>
+<a href="pubs/Leddy_EMBC2015.pdf" target="_blank">Lightweight Custom Composite Prosthetic Components Using an Additive Manufacturing-based Molding Technique,</a> proceedings of the 2015 International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC 2015), Milan, Italy, 2015.<br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_categories">FabricationTechniques</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Thomas Feix, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_EMBC2015.pdf" target="_blank">Human Precision Manipulation Workspace: Effects of Object Size and Number of Fingers Used,</a> proceedings of the 2015 International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC 2015), Milan, Italy, 2015.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Neil Bajaj, Adam J. Spiers, and Aaron M. Dollar</span><br>
+<a href="pubs/Bajaj_ICORR2015.pdf" target="_blank">State of the Art in Prosthetic Wrists: Commercial and Research Devices,</a> proceedings of the 2015 IEEE International Conference on Rehabilitation Robotics (ICORR), Singapore, 2015.<br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli, Arjun Singh, Aaron Walsman, Siddhartha Srinivasa, Pieter Abbeel, and Aaron M. Dollar </span><br>
+<a href="pubs/Calli_ICAR2015.pdf" target="_blank">The YCB Object and Model Set: Towards Common Benchmarks for Manipulation Research,</a> proceedings of the 2015 IEEE International Conference on Advanced Robotics (ICAR), Istanbul, Turkey, 2015. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+		<span class="pub_categories">Benchmarking</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Minas V. Liarokapis, Aaron M. Dollar, and Kostas Kyriokpoulos </span><br>
+<a href="pubs/Liarokapis_ICAR2015.pdf" target="_blank">Humanlike, Task-Specific Reaching and Grasping with Redundant Arms and Low-Complexity Hands,</a> proceedings of the 2015 IEEE International Conference on Advanced Robotics (ICAR), Istanbul, Turkey, 2015. <br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Adam J. Spiers, Janet van der Linden, Maria Oshodi, and Aaron M. Dollar </span><br>
+<a href="pubs/Spiers_ICAR2015.pdf" target="_blank">First Validation of the Haptic Sandwich: A Shape Changing Handheld Haptic Navigation Aid,</a> proceedings of the 2015 IEEE International Conference on Advanced Robotics (ICAR), Istanbul, Turkey, 2015. <br><br>
+	<span class="pub_categories">Haptics</span	>
+	<span class="pub_year">2015</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Oren Y. Kanner, Nicolas Rojas, and Aaron M. Dollar </span><br>
+<a href="pubs/Kanner_IDETC2015.pdf" target="_blank">Design of a Passively-adaptive Three Degree-of-Freedom Multi-legged Robot with Underactuated Legs,</a> proceedings of the 2015 ASME International Design Engineering Technical Conferences (IDETC), Mechanisms and Robotics Conference, 2015.<br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_categories">LeggedRobots</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma, Nicolas Rojas, and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_REMAR2015_2.pdf" target="_blank">Towards Predictable Precision Manipulation of Unknown Objects with Underactuated Fingers,</a> proceedings of the 2015 IEEE International Conference on Reconfigurable Mechanisms and Robotics (ReMAR), 2015.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma, Adam J. Spiers, and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_REMAR2015_1.pdf" target="_blank">M2 Gripper: Extending the Dexterity of a Simple, Underactuated Gripper,</a> proceedings of the 2015 IEEE International Conference on Reconfigurable Mechanisms and Robotics (ReMAR), 2015.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">John P. Swensen, L.U. Odhner, Brandon Araki, and Aaron M. Dollar</span><br>
+<a href="pubs/Swensen_ICRA2015.pdf" target="_blank">Injected 3D Electrical Traces in Additive Manufactured Parts with Low Melting Temperature Metals,</a> proceedings of the 2015 IEEE International Conference on Robotics and Automation (ICRA), 2015.<br><br>
+	<span class="pub_categories">FabricationTechniques</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Charlotte Guertler, and Aaron M. Dollar,</span><br>
+<a href="pubs/Bullock_ICRA2015.pdf" target="_blank">Patterned Compliance in Robotic Finger Pads for Versatile Surface Usage in Dexterous Manipulation,</a> proceedings of the 2015 IEEE International Conference on Robotics and Automation (ICRA), 2015.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Massimo Cenciarini, Albert Adams, Karen Gregorczyk, Jeffrey Schiffman, and Aaron M. Dollar,</span><br>
+<a href="pubs/Shamaei_ICRA2015.pdf" target="_blank">Effects of Exoskeletal Stiffness in Parallel with the Knee on the Motion of the Human Body Center of Mass during Walking,</a> proceedings of the 2015 IEEE International Conference on Robotics and Automation (ICRA), 2015.<br><br>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2015</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Hari Vasudevan, Aaron M.Dollar, and John B. Morrell</span><br>
+<a href="pubs/Vasudevan_ROBIO2014.pdf" target="_blank">Design of Cluster Geometries for Clusterwheel IP Robots: Obstacle size and Controllability,</a> proceedings of the 2014 IEEE International Conference on Robotics and Biomimetics (ROBIO), 2014.<br><br>
+	<span class="pub_year">2014</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_ROBIO2014.pdf" target="_blank">An Underactuated Hand for Efficient Finger-Gaiting-Based Dexterous Manipulation,</a> proceedings of the 2014 IEEE International Conference on Robotics and Biomimetics (ROBIO), 2014.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Nicolas Rojas and Aaron M. Dollar</span><br>
+<a href="pubs/Rojas_IROS2014.pdf" target="_blank">Characterization of the Precision Manipulation Capabilities of Robot Hands via the Continuous Group of Displacements,</a> proceedings of the 2014 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2014.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Spencer B. Backus, Lael U. Odhner, and Aaron M. Dollar</span><br>
+<a href="pubs/Backus_IROS2014.pdf" target="_blank">Design of Hands for Aerial Manipulation: Actuator Number and Routing for Grasping and Perching,</a> proceedings of the 2014 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2014.<br><br>
+	<span class="pub_categories">AerialManipulation</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter and Aaron M. Dollar</span><br>
+<a href="pubs/Belter_IROS2014.pdf" target="_blank">Strengthening of 3D Printed Robotic Parts via Fill Compositing,</a> proceedings of the 2014 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2014.<br><br>
+	<span class="pub_categories">FabricationTechniques</span>
+	<span class="pub_categories">Robust Robotic Mechanisms</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Thomas Feix, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_IROS2014.pdf" target="_blank">Analyzing Human Fingertip Usage in Dexterous Precision Manipulation: Implications for Robotic Finger Design,</a> proceedings of the 2014 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2014.<br><br>
+	<span class="pub_categories">Human Manipulation</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter, Bo C. Reynolds, and Aaron M. Dollar</span><br>
+<a href="pubs/Belter_EMBC2014.pdf" target="_blank">Grasp and Force Based Taxonomy of Split-Hook Prosthetic Terminal Devices</a> proceedings of the 2014 International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC 2014), Chicago, IL, 2014.<br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Albert A. Adams, Massimo Cenciarini, Karen N. Gregorczyk, and Aaron M. Dollar
+</span><br>
+<a href="pubs/Shamaei_EMBC2014.pdf" target="_blank">Preliminary Investigation of Effects of a Quasi-Passive Knee Exoskeleton on Gait Energetics ,</a> proceedings of the 2014 International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC 2014), Chicago, IL, 2014.<br><br>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">John P. Swensen and Aaron M. Dollar </span><br>
+<a href="pubs/Swensen_ICRA2014_2.pdf" target="_blank">Optimization of Parallel Spring Antagonists for Nitinol Shape Memory Alloy Actuators,</a> proceedings of the 2014 IEEE International Conference on Robotics and Automation (ICRA 2014), Hong Kong, May 31-June 7, 2014.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">John P. Swensen, Ahsan I. Nawroj, and Aaron M. Dollar </span><br>
+<a href="pubs/Swensen_ICRA2014_1.pdf" target="_blank">Simple, Scalable Active Cells for Articulated Robot Structures,</a> proceedings of the 2014 IEEE International Conference on Robotics and Automation (ICRA 2014), Hong Kong, May 31-June 7, 2014.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Oren Y. Kanner, Lael U. Odhner, and Aaron M. Dollar </span><br>
+<a href="pubs/Kanner_ICRA2014.pdf" target="_blank">The Design of Exactly Constrained Walking Robots,</a> proceedings of the 2014 IEEE International Conference on Robotics and Automation (ICRA 2014), Hong Kong, May 31-June 7, 2014.<br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_categories">LeggedRobots</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Thomas Feix, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_HAPTICS2014.pdf" target="_blank">Dexterous Workspace of Human Two- and Three-Fingered Precision Manipulation,</a> proceedings of the 2014 IEEE Haptics Symposium, Houston, Texas, February 23-26, 2014.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Hari Vasudevan, Aaron M.Dollar, John B.Morrell</span><br>
+<a href="pubs/Vasudevan2013.pdf" target="_blank">Energy-based limit cycle compensation for dynamically balancing wheeled inverted pendulum machines,</a> Proceedings of ASME 6th Annual Dynamic Systems and Control Conference (DSCC-2013), Stanford, CA, USA, 2013.<br><br>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter and Aaron M. Dollar</span><br>
+<a href="pubs/Belter_ICORR2013.pdf" target="_blank">Novel Differential Mechanism Enabling Two DOF from a Single Actuator: Application to a Prosthetic Hand,</a> proceedings of the 2013 IEEE International Conference on Rehabilitation Robotics (ICORR), Seattle, Washington USA, 2013.<br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Pablo Napolitano, and Aaron M. Dollar</span><br>
+<a href="pubs/Shamaei_ICORR2013.pdf" target="_blank">A Quasi-Passive Compliant Stance Control Knee-Ankle-Foot Orthosis,</a> proceedings of the 2013 IEEE International Conference on Rehabilitation Robotics (ICORR), Seattle, Washington USA, 2013.<br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Julia Borras-Sol and Aaron M. Dollar</span><br>
+<a href="pubs/Borras_CK2013.pdf" target="_blank">Framework Comparison Between a Multifingered Hand and a Parallel Manipulator,</a> proceedings of the 2013 International Workshop on Computational Kinematics, Barcelona, Spain, May 12-15, 2013.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Thomas Feix, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_ICRA2013.pdf" target="_blank">Finding Small, Versatile Sets of Human Grasps to Span Common Objects,</a> proceedings of the 2013 IEEE International Conference on Robotics and Automation (ICRA 2013), Karlsruhe, Germany, May 6-10, 2013.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma, Lael U. Odhner, and Aaron M. Dollar</span><br>
+<a href="pubs/Ma_ICRA2013.pdf" target="_blank">A Modular, Open-Source 3D Printed Underactuated Hand,</a> proceedings of the 2013 IEEE International Conference on Robotics and Automation (ICRA 2013), Karlsruhe, Germany, May 6-10, 2013.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">Education</span>
+	<span class="pub_year">2013</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Zhong Li, Devin Balkcom, and Aaron M. Dollar</span><br>
+<a href="pubs/Li_ICRA2013.pdf" target="_blank">Rigid 2D Space-Filling Folds of Unbroken Linear Chains,</a> proceedings of the 2013 IEEE International Conference on Robotics and Automation (ICRA 2013), Karlsruhe, Germany, May 6-10, 2013.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Julia Borras-Sol and Aaron M. Dollar</span><br>
+<a href="pubs/Borras_ICRA2013.pdf" target="_blank">A Parallel Robots Framework to Study Precision Grasping and Dexterous Manipulation,</a> proceedings of the 2013 IEEE International Conference on Robotics and Automation (ICRA 2013), Karlsruhe, Germany, May 6-10, 2013.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2013</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner, Chad Walker, and Aaron M. Dollar</span><br>
+<a href="pubs/Odhner_IROS2012.pdf" target="_blank">Simplifying Robot Hands using Recursively Scaled Power Grasps,</a> proceedings of the 2012 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2012.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Julia Borras-Sol and Aaron M. Dollar</span><br>
+<a href="pubs/Borras_IROS2012.pdf" target="_blank">Static Analysis of Parallel Robots with Compliant Joints for In-Hand Manipulation,</a> proceedings of the 2012 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2012.<br><br>
+	<span class="pub_categories">ParallelManipulators</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Stefan A.J. Spanjer, Ravi Balasubramanian, Just Herder, and Aaron M. Dollar</span><br>
+<a href="pubs/Spanjer_IROS2012.pdf" target="_blank">Improved Grasp Robustness through Variable Transmission Ratios in Underactuated Fingers,</a> proceedings of the 2012 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2012.<br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock, Julia Borras-Sol, and Aaron M. Dollar</span><br>
+<a href="pubs/Bullock_BIOROB2012.pdf" target="_blank">Assessing Assumptions in Kinematic Hand Models: A Review,</a> proceedings of the 2012 IEEE International Conference on Biomedical Robotics and Biomechatronics (BioRob), 2012.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Oren Y. Kanner and Aaron M. Dollar </span><br>
+<a href="pubs/Kanner_IDETC2012.pdf" target="_blank">Optimization of Coupling Ratio and Kinematics of an Underactuated Robot Leg for Passive Terrain Adaptability,</a> proceedings of the 2012 ASME International Design Engineering Technical Conferences (IDETC), Mechanisms and Robotics Conference, 2012.<br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_categories">LeggedRobots</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Stefan A.J. Spanjer, Ravi Balasubramanian, Aaron M. Dollar, and Just Herder </span><br>
+<a href="pubs/Spanjer_REMAR2012.pdf" target="_blank">Underactuated Gripper that is able to Convert from Precision to Power Grasp by a Variable Transmission Ratio,</a> proceedings of the 2012 IEEE International Conference on Reconfigurable Mechanisms and Robotics (ReMAR), 2012.<br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2012</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Spencer B. Backus and Aaron M. Dollar </span><br>
+<a href="pubs/Backus_ICRA2012.pdf" target="_blank">Robust, Inexpensive Resonant Frequency Based Contact Detection for Robotic Manipulators,</a> proceedings of the 2012 IEEE International Conference on Robotics and Automation (ICRA 2012), Minneapolis, MN, May 14-18, 2012.<br><br>
+	<span class="pub_categories">Sensors</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner, Raymond R. Ma, and Aaron M. Dollar </span><br>
+<a href="pubs/Odhner_ICRA2012.pdf" target="_blank">Precision Grasping and Manipulation of Small Objects from Flat Surfaces Using Underactuated Fingers,</a> proceedings of the 2012 IEEE International Conference on Robotics and Automation (ICRA 2012), Minneapolis, MN, May 14-18, 2012.<br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2012</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ravi Balasubramanian and Aaron M. Dollar </span><br>
+<a href="pubs/Balasubramanian_IROS2011.pdf" target="_blank">Performance of Serial Underactuated Mechanisms: Number of Degrees of Freedom and Actuators,</a> proceedings of the 2011 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2011), San Francisco, CA, Sept. 25-30, 2011.<br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner and Aaron M. Dollar </span><br>
+<a href="pubs/Odhner_IROS2011.pdf" target="_blank">Toward Simpler Models of Bending Sheet Joints,</a> proceedings of the 2011 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2011), San Francisco, CA, Sept. 25-30, 2011.<br><br>
+	<span class="pub_categories">ModelingofFlexuralJoints</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Pauline E.I. Pounds and Aaron M. Dollar </span><br>
+<a href="pubs/Pounds_IROS2011.pdf" target="_blank">UAV Rotorcraft in Compliant Contact: Stability Analysis and Simulation,</a> proceedings of the 2011 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2011), San Francisco, CA, Sept. 25-30, 2011.<br><br>
+	<span class="pub_categories">AerialManipulation</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei, Massimo Cenciarini, and Aaron M. Dollar </span><br>
+<a href="pubs/Shamaei_EMBC2011.pdf" target="_blank">On the Mechanics of the Ankle in the Stance Phase of the Gait,</a> proceedings of the 2011 International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC �11), Boston, MA, Aug. 30-Sept. 3, 2011.<br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter and Aaron M. Dollar </span><br>
+<a href="pubs/Belter_ICORR2011.pdf" target="_blank">Performance Characteristics of Anthropomorphic Prosthetic Hands,</a> proceedings of the 2011 IEEE International Conference on Rehabilitation Robotics (ICORR), Zurich, Switzerland, June 29-July 1, 2011. <br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ian M. Bullock and Aaron M. Dollar </span><br>
+<a href="pubs/Bullock_ICORR2011.pdf" target="_blank">Classifying Human Manipulation Behavior,</a> proceedings of the 2011 IEEE International Conference on Rehabilitation Robotics (ICORR), Zurich, Switzerland, June 29-July 1, 2011.<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Massimo Cenciarini and Aaron M. Dollar </span><br>
+<a href="pubs/Cenciarini_ICORR2011.pdf" target="_blank">Biomechanical Considerations in the Design of Lower Limb Exoskeletons,</a> proceedings of the 2011 IEEE International Conference on Rehabilitation Robotics (ICORR), Zurich, Switzerland, June 29-July 1, 2011.<br><br>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei and Aaron M. Dollar </span><br>
+<a href="pubs/Shamaei_ICORR2011.pdf" target="_blank">On the Mechanics of the Knee during the Stance Phase of the Gait,</a> proceedings of the 2011 IEEE International Conference on Rehabilitation Robotics (ICORR), Zurich, Switzerland, June 29-July 1, 2011.<br><br>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Raymond R. Ma and Aaron M. Dollar </span><br>
+<a href="pubs/Ma_ICAR2011.pdf" target="_blank">On Dexterity and Dexterous Manipulation,</a> proceedings of the 2011 IEEE International Conference on Advanced Robotics (ICAR), Tallinn, Estonia, June 20-23, 2011. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ravi Balasubramanian and Aaron M. Dollar </span><br>
+<a href="pubs/Balasubramanian_ICRA2011_1.pdf" target="_blank">A Comparison of Workspace and Force Capabilities between Classes of Underactuated Mechanisms,</a> proceedings of the 2011 IEEE International Conference on Robotics and Automation (ICRA), Shanghai, China, May 9-13, 2011. <br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ravi Balasubramanian and Aaron M. Dollar </span><br>
+<a href="pubs/Balasubramanian_ICRA2011_2.pdf" target="_blank">Variation in Compliance In Two Classes of Two-Link Underactuated Mechanisms,</a> proceedings of the 2011 IEEE International Conference on Robotics and Automation (ICRA), Shanghai, China, May 9-13, 2011. <br><br>
+	<span class="pub_categories">UnderactuatedMechanisms</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joseph T. Belter and Aaron M. Dollar </span><br>
+<a href="pubs/Belter_ICRA2011.pdf" target="_blank">Underactuated Grasp Acquisition and Stability using Friction Based Coupling Mechanisms,</a> proceedings of the 2011 IEEE International Conference on Robotics and Automation (ICRA), Shanghai, China, May 9-13, 2011. <br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner and Aaron M. Dollar </span><br>
+<a href="pubs/Odhner_ICRA2011.pdf" target="_blank">Dexterous Manipulation with Underactuated Elastic Hands,</a> proceedings of the 2011 IEEE International Conference on Robotics and Automation (ICRA), Shanghai, China, May 9-13, 2011. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Pauline E.I. Pounds, Daniel R. Bersak, and Aaron M. Dollar </span><br>
+<a href="pubs/Pounds_ICRA2011.pdf" target="_blank">Grasping From the Air: Hovering Capture and Load Stability,</a> proceedings of the 2011 IEEE International Conference on Robotics and Automation (ICRA), Shanghai, China, May 9-13, 2011. <br><br>
+	<span class="pub_categories">AerialManipulation</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joshua Z. Zheng, Sara De La Rosa, and Aaron M. Dollar</span><br>
+<a href="pubs/Zheng_ICRA2011.pdf" target="_blank">An Investigation of Grasp Type and Frequency in Daily Household and Machine Shop Tasks,</a> proceedings of the 2011 IEEE International Conference on Robotics and Automation (ICRA), Shanghai, China, May 9-13, 2011. <br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+	<span class="pub_year">2011</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Kayla Matheus and Aaron M. Dollar </span><br>
+<a href="pubs/Matheus_IROS2010.pdf" target="_blank">Benchmarking Grasping and Manipulation: Properties of the Objects of Daily Living,</a> proceedings of the 2010 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2010).<br><br>
+	<span class="pub_categories">HumanGraspingandManipulation</span>
+		<span class="pub_categories">Benchmarking</span>
+	<span class="pub_year">2010</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Pauline E.I. Pounds and Aaron M. Dollar </span><br>
+<a href="pubs/Pounds_DSCC2010.pdf" target="_blank">Hovering Stability of Helicopters with Elastic Constraints,</a> proceedings of the 2010 ASME Dynamics Systems and Control Conference (DSCC 2010).<br><br>
+	<span class="pub_categories">AerialManipulation</span>
+	<span class="pub_year">2010</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner and Aaron M. Dollar </span><br>
+<a href="pubs/Odhner_IDETC2010.pdf" target="_blank">Fast, Accurate Models for Predicting the Compliance of Elastic Flexure-Jointed Robots,</a> proceedings of the 2010 ASME International Design Engineering Technical Conferences, Mechanisms and Robotics Conference (IDETC 2010).<br><br>
+	<span class="pub_categories">ModelingofFlexuralJoints</span>
+	<span class="pub_year">2010</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ravi Balasubramanian, Joseph T. Belter, and Aaron M. Dollar </span><br>
+<a href="pubs/Balasubramanian_IDETC2010.pdf" target="_blank">External Disturbances and Coupling Mechanisms in Underactuated Hands,</a> proceedings of the 2010 ASME International Design Engineering Technical Conferences, Mechanisms and Robotics Conference (IDETC 2010).<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2010</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Lael U. Odhner and Aaron M. Dollar </span><br>
+<a href="pubs/Odhner_RSS2010.pdf" target="_blank">The Smooth Curvature Flexure Model: An Accurate, Low-Dimensional Approach for Robot Analysis,</a> proceedings of the 2010 Robotics: Science and Systems Conference (RSS 2010).<br><br>
+	<span class="pub_categories">ModelingofFlexuralJoints</span>
+	<span class="pub_year">2010</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Hugh Herr </span><br>
+<a href="pubs/dollar_IROS08.pdf" target="_blank">Design of a Quasi-Passive Knee Exoskeleton to Assist Running,</a> proceedings of the 2008 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2008).<br><br>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_year">2008</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Peter Deckers, Aaron M. Dollar, and Robert D. Howe </span><br>
+<a href="pubs/deckers_RSS07.pdf" target="_blank">Guiding Grasping with Proprioception and Markov Models,</a> proceedings of the Workshop on Robot Manipulation: Sensing and Adapting to the Real World, Robotics: Science and Systems Conference (RSS), Atlanta, GA, June 30, 2007.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2007</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Hugh Herr </span><br>
+<a href="pubs/dollar_ICORR07_Orthoses.pdf" target="_blank">Active Orthoses for the Lower Limbs: Challenges and State of the Art,</a> proceedings of the 2007 IEEE International Conference on Rehabilitation Robotics (ICORR), Noordwijk, Netherlands, June 12-15, 2007.<br><br>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_year">2007</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe </span><br>
+<a href="pubs/dollar_ICORR07_Hand.pdf" target="_blank">The SDM Hand as a Prosthetic Terminal Device: A Feasibility Study,</a> proceedings of the 2007 IEEE International Conference on Rehabilitation Robotics (ICORR), Noordwijk, Netherlands, June 12-15, 2007. <b>Winner of the Best Student Paper Award</b><br><br>
+	<span class="pub_categories">Prosthetics</span>
+	<span class="pub_year">2007</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe </span><br>
+<a href="pubs/dollar_ICRA07.pdf" target="_blank">Simple, Robust Autonomous Grasping in Unstructured Environments,</a> proceedings of the 2007 IEEE International Conference on Robotics and Automation (ICRA), Rome, Italy, April 10-14, 2007.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2007</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe </span><br>
+<a href="pubs/DollarIDETC2006.pdf" target="_blank">Joint Coupling Design of Underactuated Grippers,</a> proceedings of the ASME 30th Annual Mechanisms and Robotics Conference, 2006 International Design Engineering Technical Conferences (IDETC), Philadelphia, PA, Sept. 10-13, 2006.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2006</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe </span><br>
+<a href="pubs/DollarRSS2006.pdf" target="_blank">Designing Robust Robotic Graspers for Unstructured Environments,</a> proceedings of the Workshop on Manipulation for Human Environments, 2006 Robotics: Science and Systems Conference (RSS), Philadelphia, PA, Aug. 19, 2006.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2006</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar, Christopher R. Wagner, and Robert D. Howe</span><br>
+<a href="pubs/Dollar_BioRob2006.pdf" target="_blank">Embedded Sensors for Biomimetic Robotics via Shape Deposition Manufacturing,</a> proceedings of the first IEEE / RAS-EMBS International Conference on Biomedical Robotics and Biomechatronics (BioRob), selected for a single-track podium presentation, Pisa, Italy, Feb. 20-22, 2006.<br><br>
+	<span class="pub_categories">Sensors</span>
+	<span class="pub_year">2006</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar, Amy E. Kerdok, Solomon Gilbert Diamond, Paul M. Novotny, and Robert D. Howe </span><br>
+<a href="pubs/IMECE81929.pdf" target="_blank"> Starting on the Right Track: Introducing Students to Mechanical Engineering with a Project-Based Machine Design Course,</a> Proceedings of the 2005 ASME International Mechanical Engineering Congress and Exposition (IMECE), Mechanical Engineering Education Symposium, 2005.<br><br>
+	<span class="pub_categories">Education</span>
+	<span class="pub_year">2005</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Robert D. Howe </span><br>
+<a href="pubs/IMECE79791.pdf" target="_blank"> Design and Evaluation of a Robust Compliant Grasper using Shape Deposition Manufacturing,</a> Proceedings of the 2005 ASME International Mechanical Engineering Congress and Exposition (IMECE), Robotics panel of the Dynamic Systems and Control Division, 2005.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2005</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and R.D. Howe</span><br>
+<a href="pubs/DollarIROS03.pdf" target="_blank">Towards Grasping in Unstructured Environments: Optimization of Grasper Compliance and Configuration,</a> Proceedings of the 2003 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS 2003), Las Vegas, NV, October 27-31, 2003.
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2003</span>
+</span>
+
+</td></tr>
+
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+
+<tr><td class="title">Other Publications</td></tr>
+
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+<!-- 	--------------------------------------------------------------------- -->
+
+<tr><td class="bibliography">
+
+<span class="pub">
+<span class="pub_authors">Brian Flynn, Kostas Bekris, Berk Calli, Aaron Dollar, Adam Norton, Yu Sun, and Holly Yanco</span><br>
+<a href="https://arxiv.org/abs/2504.06819" target="_blank">Developing Modular Grasping and Manipulation Pipeline Infrastructure to Streamline Performance Benchmarking,
+</a> 	IEEE International Conference on Robotics and Automation (ICRA), Workshop on Robot Software Architectures (RSA25), 2025. <br><br>
+	<span class="pub_categories">Benchmarking</span>
+	<span class="pub_year">2025</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Joao Bimbo, Andrew S. Morgan, and Aaron M. Dollar</span><br>
+<a href="pubs/Bimbo_RSSWorkshop2022.pdf" target="_blank">Using Contacts During Robot Manipulation to Map
+and Reconstruct a Scene,</a> Robotics: Science and Systems Workshop on "The Science of Bumping Into Things: Towards Robots That Aren’t Afraid of Contact", 2022. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2022</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Andrew S. Morgan</span><br>
+<a href="pubs/Morgan_RSSPioneers2022.pdf" target="_blank">Learning to Visually Observe, Plan, and Control
+Compliant Robot In-Hand Manipulation,</a> Robotics: Science and Systems Pioneers Wokshop, 2022. <br><br>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2022</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Berk Calli, Aaron M. Dollar, Maximo A. Roa, Siddhartha Srinivasa, and Yu Sun</span><br>
+<a href="https://ieeexplore.ieee.org/abstract/document/9558731" target="_blank">Guest Editorial: Introduction to the Special Issue on Benchmarking Protocols for Robotic Manipulation,</a> IEEE Robotics and Automation Letters, Vol. 6, No. 4, 2021. <br><br>
+	<span class="pub_categories">Benchmarking</span>
+	<span class="pub_year">2021</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Yuri Gloumakov, Joao Bimbo, and Aaron M. Dollar</span><br>
+<a href="pubs/MEC20_paper_YG.pdf" target="_blank">Trajectory Control for a Myoelectric Prosthetic Wrist,</a> Myoelectric Controls Symposium, 2020. <br><br>
+	<span class="pub_categories">VirtualReality</span>
+	<span class="pub_year">2020</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Michael T. Leddy and Aaron M. Dollar</span><br>
+The Yale Multigrasp Prosthetic Hand (abstract). Proceedings of the Myoelectric Control and Upper Limb Prosthesis Symposium (MEC), 2017. <b>2nd Place Student Paper / Presentation</b><br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2017</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Ahsan I. Nawroj, John P. Swensen, and Aaron M. Dollar</span><br>
+<a href="pubs/Nawroj_SMASIS2014.pdf" target="_blank">Development of Active-Cells for Macroscopically Deformable Structures,</a> proceedings of the ASME Conference on Smart Materials, Adaptive Structures and Intelligent Systems (SMASIS), 2014.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2014</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Ahsan I. Nawroj, John P. Swensen, and Aaron M. Dollar</span><br>
+<a href="pubs/Nawroj_SMASIS2013.pdf" target="_blank"> Design of a Bulk Conductive Polymer using Embedded Macroscopic Copper Cells,</a> proceedings of the ASME Conference on Smart Materials, Adaptive Structures and Intelligent Systems (SMASIS), 2013.<br><br>
+	<span class="pub_categories">CellularRoboticsandMaterials</span>
+	<span class="pub_year">2013</span>
+</span>
+
+
+<span class="pub">
+<span class="pub_authors">Kamran Shamaei</span><br>
+<a href="pubs/ShamaeiDissertation2014.pdf" target="_blank">Compliant Knee Exoskeletons and Their Effects on Gait Biomechanics</a> Ph.D. Dissertation, Yale University, December, 2014<br><br>
+	<span class="pub_categories">ActiveOrthoses</span>
+	<span class="pub_categories">LegBiomechanics</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Robert D. Howe, Aaron M. Dollar, and Mark Claffee</span><br>
+<a href="pubs/Dollar_Spectrum2014.pdf" target="_blank">Robots get a Grip,</a> IEEE Spectrum, pp. 42-47, Dec. 2014.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_categories">DexterousManipulation</span>
+	<span class="pub_year">2014</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar, Daniela Rus, Paolo Fiorini </span><br>
+<a href="pubs/dollar_RCW.pdf" target="_blank">RoboticsCourseWare.org: An Open Repository for Robotics Pedagogical Materials,</a> IEEE Robotics and Automation Magazine, pp. 14-15, June 2008.<br><br>
+	<span class="pub_categories">Education</span>
+	<span class="pub_year">2008</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar</span><br>
+<a href="pubs/DollarDissertation2006.pdf" target="_blank">Design Principles for Robust Grasping in Unstructured Environments,</a> Ph.D. Dissertation, Harvard University, Division of Engineering and Applied Sciences, October, 2006.<br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2006</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar</span><br>
+<a href="pubs/DollarMechDesign2006.pdf" target="_blank">A Robust Robotic Hand for Unstructured Environments,</a> 2006 International Design Engineering Technical Conferences (IDETC), Philadelphia, PA, Sept. 10-13, 2006. <b>First Place, 2006 ASME Student Mechanism Design Competition, Graduate Division</b><br><br>
+	<span class="pub_categories">RoboticGrasping</span>
+	<span class="pub_year">2006</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar and Daniela Rus</span><br>
+<a href="pubs/Dollar_RCC.pdf" target="_blank">Teaching Robotics Everywhere: Spotlight on the Robotics Curriculum Clearinghouse,</a> IEEE Robotics and Automation Magazine, Education Editorial Column, vol. 13(2), pp. 7-8, 2006.<br><br>
+	<span class="pub_categories">Education</span>
+	<span class="pub_year">2006</span>
+</span>
+
+<span class="pub">
+<span class="pub_authors">Aaron M. Dollar</span><br>
+<a href="pubs/buggrasp.pdf" target="_blank">Arthropod Grasping and Manipulation: A Literature Review,</a> Harvard BioRobotics Laboratory Technical Report, April 5, 2001.
+	<span class="pub_year">2001</span>
+</span>
+
+</td></tr></table>
+</td></tr></table>
+</td><td></td></tr><tr height="20"><td colspan="3"></td></tr></table>
+
+<!-- Left Column End -->
+</td></tr></table>
+
+<!-- Credits Table -->
+<table class="white" width="900" align="center" border="0" cellpadding="0" cellspacing="0">
+<tr valign="top">
+<td class="blue">
+
+<!-- Table for Padding -->
+<table border="0" cellpadding="20" cellspacing="0">
+<tr valign="top"><td class="credits">
+
+<!-- Credits Text -->
+&copy; Copyright 2011-2024.
+<!-- Credits End -->
+
+</td></tr></table> <!-- Table for Padding -->
+</td></tr></table> <!-- Table for Credits -->
+
+<!-- End of Black Box -->
+</td></tr></table>
+
+</body></html>

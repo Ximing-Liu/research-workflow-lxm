@@ -1,0 +1,77 @@
+[
+  {
+    "id": "NMI-01",
+    "journal": "Nature Machine Intelligence",
+    "publication_year": 2025,
+    "title": "Synergy-based robotic quadruped leveraging passivity for natural intelligence and behavioural diversity",
+    "doi": "10.1038/s42256-025-00988-x",
+    "file": "Nature_Machine_Intelligence/2025_Stella_PAWS.pdf",
+    "version": "出版社正式版",
+    "source_url": "https://www.nature.com/articles/s42256-025-00988-x.pdf",
+    "pages": 20,
+    "topic": "构型、运动协同、控制",
+    "bytes": 4604616,
+    "sha256": "d6b99ef8325aae58328ebe9e02e6e6e00da8a0ccd41441a5ccd8b586a4530764",
+    "status": "downloaded"
+  },
+  {
+    "id": "NMI-02",
+    "journal": "Nature Machine Intelligence",
+    "publication_year": 2025,
+    "title": "Type II mechanoreceptors and cuneate spiking neuronal network enable touch localization on a large-area e-skin",
+    "doi": "10.1038/s42256-025-01076-w",
+    "file": "Nature_Machine_Intelligence/2025_daCosta_Type_II_Mechanoreceptors.pdf",
+    "version": "出版社正式版",
+    "source_url": "https://www.nature.com/articles/s42256-025-01076-w.pdf",
+    "pages": 23,
+    "topic": "感知：形变编码与脉冲网络",
+    "bytes": 6376264,
+    "sha256": "33176a89b4d62400a06fba1745ce37023ba19ae9fbeb1efc23d1ef2a1f3e0888",
+    "status": "downloaded"
+  },
+  {
+    "id": "NMI-03",
+    "journal": "Nature Machine Intelligence",
+    "publication_year": 2025,
+    "title": "Designing metamaterials with programmable nonlinear responses and geometric constraints in graph space",
+    "doi": "10.1038/s42256-025-01067-x",
+    "file": "Nature_Machine_Intelligence/2025_Maurizi_GraphMetaMat_arXiv_preprint.pdf",
+    "version": "作者预印本（2024）；对应期刊论文发表于2025",
+    "source_url": "https://arxiv.org/pdf/2408.06300",
+    "pages": 19,
+    "topic": "构型逆向设计；间接相关",
+    "bytes": 3158430,
+    "sha256": "88d446136de76a498dd14c8700c244a2749effdb49d8ec573ae736402db4a73f",
+    "status": "downloaded"
+  },
+  {
+    "id": "SR-01",
+    "journal": "Science Robotics",
+    "publication_year": 2025,
+    "title": "Forces for free: Vision-based contact force estimation with a compliant hand",
+    "doi": "10.1126/scirobotics.adq5046",
+    "status": "not_downloaded",
+    "reason": "出版社PDF返回403；作者及实验室主页仅链接出版社；开放获取索引未提供公开PDF。",
+    "public_or_author_page": "https://www.eng.yale.edu/grablab/pubs.html"
+  },
+  {
+    "id": "SR-02",
+    "journal": "Science Robotics",
+    "publication_year": 2022,
+    "title": "Mechanical neural networks: Architected materials that learn behaviors",
+    "doi": "10.1126/scirobotics.abq7278",
+    "status": "not_downloaded",
+    "reason": "出版社PDF返回403；作者主页仅链接出版社，ResearchGate显示无全文。UCLA学位论文包含相关章节，但未作为期刊原文替代下载。",
+    "public_or_author_page": "https://flexible.seas.ucla.edu/publications"
+  },
+  {
+    "id": "SR-03",
+    "journal": "Science Robotics",
+    "publication_year": 2021,
+    "title": "Electronics-free pneumatic circuits for controlling soft-legged robots",
+    "doi": "10.1126/scirobotics.aay2627",
+    "status": "not_downloaded",
+    "reason": "已找到作者公开PDF；Google Drive下载超时，ResearchGate下载返回403。",
+    "public_or_author_page": "https://drive.google.com/file/d/1v2zHAMTT_CxxoZE6EzQ53kfl3O1kPUcG/view"
+  }
+]
